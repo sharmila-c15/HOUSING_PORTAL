@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet"><title>Digital Housing Portal</title>
+<style>
+:root{--bg:#f2f7f6;--card:#fff;--ink:#212529;--mute:#6c757d;--line:#dee2e6;--pri:#0e7c7b;--ok:#198754;--warn:#ffc107;--bad:#dc3545;--info:#0dcaf0;--infobg:#cff4fc;--infoink:#055160;--okbg:#d1e7dd;--okink:#0a3622;--head:#f8f9fa;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151c;--card:#1a212b;--ink:#e8edf3;--mute:#9aa7b4;--line:#2c3643;--infobg:#0b3a44;--infoink:#8fe3f3;--okbg:#12382a;--okink:#a8e6c4;--head:#212a36}}
+:root[data-theme="dark"]{--bg:#10151c;--card:#1a212b;--ink:#e8edf3;--mute:#9aa7b4;--line:#2c3643;--infobg:#0b3a44;--infoink:#8fe3f3;--okbg:#12382a;--okink:#a8e6c4;--head:#212a36}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}*{box-sizing:border-box}
+body{margin:0;min-height:100%;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.nb{background:var(--pri);color:#fff;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.nb .in{max-width:1140px;margin:0 auto;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-weight:700;font-size:1.15rem;cursor:pointer;display:flex;align-items:center;gap:8px}
+.nav{display:flex;gap:10px;align-items:center;font-size:.95rem}
+.wrap{max-width:1140px;width:100%;margin:0 auto;padding:28px 16px 40px;flex:1}
+button{font:inherit;cursor:pointer;border-radius:6px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 14px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgb(var(--pr)/.5);outline-offset:1px}
+.b-pri{background:var(--pri);border-color:var(--pri);color:#fff}.b-warn{background:var(--warn);border-color:var(--warn);color:#000}.b-ok{background:var(--ok);border-color:var(--ok);color:#fff}.b-bad{background:var(--bad);border-color:var(--bad);color:#fff}.b-w{background:#fff;color:#000;border-color:#fff}
+.lg{padding:11px 22px;font-size:1.1rem}.sm{padding:3px 10px;font-size:.85rem}
+.hero{background:linear-gradient(135deg,#dff0ff,#fff);text-align:center;padding:90px 16px;margin:-28px -16px 0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero{background:linear-gradient(135deg,#143152,#10151c)}}
+.hero h1{font-size:clamp(2.2rem,6vw,3.2rem);margin:0 0 14px;font-weight:700}.hero p{font-size:1.15rem;margin:0 0 28px}
+h2{margin:0 0 6px;font-weight:700;font-size:1.9rem}h3{margin:0 0 10px;font-size:1.25rem}.sub{color:var(--mute);margin:0 0 20px}
+.grid{display:grid;gap:18px}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.feat{text-align:center}.feat svg{width:44px;height:44px;margin-bottom:8px}.feat h4{margin:0 0 6px;font-weight:500;font-size:1.1rem}.feat p{margin:0;color:var(--mute);font-size:.95rem}
+.sec{text-align:center;font-weight:400;font-size:1.9rem;margin:46px 0 22px}
+.stat{display:flex;justify-content:space-between;align-items:center}.stat span{color:var(--mute)}.stat b{display:block;font-size:1.9rem}.stat svg{width:34px;height:34px}
+.auth{max-width:440px;margin:30px auto}.auth h2{text-align:center;font-weight:400}
+label{display:block;margin:14px 0 5px}
+input,select,textarea{width:100%;font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+.full{width:100%;margin-top:18px}
+.alert{border-radius:6px;padding:12px 16px;margin:16px 0;background:var(--infobg);color:var(--infoink);border:1px solid var(--info)}
+.alert.ok{background:var(--okbg);color:var(--okink);border-color:#a3cfbb}.alert.bad{background:#f8d7da;color:#58151c;border-color:#f1aeb5}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line)}th{background:var(--head)}
+.tw{overflow-x:auto}
+.badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:.78rem;font-weight:700}
+.Pending{background:var(--warn);color:#000}.Under{background:var(--info);color:#000}.Approved{background:var(--ok);color:#fff}.Rejected{background:var(--bad);color:#fff}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:36px 0 14px}.top h3{font-size:1.6rem;font-weight:700;margin:0}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.tools input{max-width:280px}.tools select{max-width:190px}
+.steps{display:flex;margin:18px 0}.steps div{flex:1;border-top:5px solid var(--line);padding-top:8px;font-size:.9rem;color:var(--mute)}.steps .d{border-color:var(--ok);color:var(--ink)}.steps .x{border-color:var(--bad);color:var(--ink)}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:6px 12px}.kv dt{color:var(--mute)}.kv dd{margin:0}
+.err{color:var(--bad);min-height:1.3em;margin-top:10px}
+a.lk{color:var(--pri);cursor:pointer;text-decoration:underline}
+footer{text-align:center;color:var(--mute);padding:18px;border-top:1px solid var(--line);font-size:.88rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:760px){.g3,.g4{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}.kv{grid-template-columns:1fr}}
+@media(max-width:480px){.g3,.g4{grid-template-columns:1fr}}
+
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:30px;align-items:center;text-align:left;padding:56px 28px;border-radius:0 0 28px 28px}
+.hero p{max-width:46ch}.hero svg{width:100%;height:auto;max-height:290px}.cta{display:flex;gap:12px;flex-wrap:wrap}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:-28px;position:relative}
+.strip div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center;box-shadow:0 4px 14px rgb(var(--pr)/.12)}.strip b{display:block;color:var(--pri);font-size:1.2rem}.strip span{color:var(--mute);font-size:.85rem}
+.feat{cursor:pointer;transition:transform .15s,box-shadow .15s}.feat:hover{transform:translateY(-4px);box-shadow:0 10px 22px rgb(var(--pr)/.2)}.feat:focus-visible{outline:3px solid rgb(var(--pr)/.5)}
+.feat .more{color:var(--pri);font-size:.88rem;margin-top:8px;display:block}
+.sch{border-left:5px solid var(--pri);display:flex;flex-direction:column;gap:6px}.sch p{margin:0;color:var(--mute);font-size:.92rem;flex:1}
+.chk{display:flex;gap:10px;align-items:flex-start;margin:10px 0}.chk i{flex:none;width:24px;height:24px;border-radius:50%;background:var(--ok);color:#fff;font-style:normal;text-align:center;line-height:24px;font-size:.85rem}
+.fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:50%;background:var(--pri);color:#fff;font-size:1.5rem;border:0;box-shadow:0 6px 18px rgb(var(--pr)/.45);z-index:20;padding:0}
+.panel{position:fixed;right:18px;bottom:calc(86px + env(safe-area-inset-bottom,0px));width:min(360px,calc(100vw - 36px));height:min(480px,70vh);background:var(--card);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,.28);z-index:20}
+.ph{background:var(--pri);color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}.ph span{font-size:.8rem;opacity:.9}
+.msgs{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.m{max-width:88%;padding:8px 12px;border-radius:14px;font-size:.92rem}.m.b{background:var(--head);align-self:flex-start;border-bottom-left-radius:4px}.m.u{background:var(--pri);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.dots i{display:inline-block;width:6px;height:6px;margin:0 2px;background:var(--mute);border-radius:50%;animation:bl 1s infinite}.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}@keyframes bl{50%{opacity:.25}}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 8px}.chips button{font-size:.8rem;padding:3px 10px;border-radius:99px}
+.pi{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line)}
+@media(max-width:760px){.hero{grid-template-columns:1fr;text-align:center}.hero p{margin-inline:auto}.cta{justify-content:center}.strip{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){.feat,.dots i{transition:none;animation:none}}
+
+.nb{background:linear-gradient(90deg,#0e1a35,#0e7c7b)!important;box-shadow:0 2px 10px rgb(var(--pr)/.35)}
+.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+.hero{background:linear-gradient(135deg,#0e1a35 0%,#0e5f66 55%,#0e7c7b 100%)!important;color:#fff;padding:64px 32px 70px;box-shadow:0 14px 34px rgba(11,79,199,.3)}
+.hero h1{color:#fff}.hero p{color:#dbe8ff}.hero .lg{box-shadow:0 6px 16px rgba(0,0,0,.2)}.hero .cta button:not(.b-pri){background:transparent;color:#fff;border-color:#fff}.hero .cta .b-pri{background:#ffc107;border-color:#ffc107;color:#1b1b1b;font-weight:600}
+.feat svg{width:30px;height:30px;padding:14px;box-sizing:content-box;background:rgb(var(--pr)/.12);border-radius:50%}
+.sch{border-left:1px solid var(--line);border-top:5px solid var(--pri)}
+.stat svg{padding:10px;background:rgb(var(--pr)/.1);border-radius:12px;box-sizing:content-box}
+.banner{background:linear-gradient(120deg,#0e1a35,#0e7c7b);color:#fff;border-radius:12px;padding:24px 26px;margin-bottom:20px}.banner h2{margin:0 0 4px;color:#fff}.banner p{margin:0;color:#e1ecff}
+footer{background:var(--g1);color:#cfd8ee;border:0}
+.back{display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;font-weight:500}
+.authbox{display:grid;grid-template-columns:1fr 1fr;max-width:900px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 14px 40px rgba(13,40,110,.22);background:var(--card);border:1px solid var(--line)}
+.aside{background:linear-gradient(160deg,var(--nav),var(--pri));color:#fff;padding:36px 30px;display:flex;flex-direction:column;justify-content:center;gap:12px}.aside h2{color:#fff;font-weight:700;margin:0}.aside p{margin:0;color:#dbe8ff}.aside li{margin:8px 0}.aside ul{padding-left:20px;margin:6px 0 0}
+.fm{padding:34px 32px}.fm h2{text-align:left;font-weight:700;margin:0 0 4px}
+.pw{position:relative}.pw input{padding-right:64px}.pw button{position:absolute;right:6px;top:5px;border:0;background:none;color:var(--pri);font-size:.85rem;padding:4px 8px}
+@media(max-width:760px){.authbox{grid-template-columns:1fr}.aside{display:none}.fm{padding:26px 20px}}
+
+body{font-family:var(--font,'Plus Jakarta Sans'),system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.nb{background:var(--nav)!important;border-bottom:3px solid var(--acc);box-shadow:none!important}
+.hero{background:radial-gradient(circle at 85% 15%,var(--gl),transparent 45%),radial-gradient(circle at 5% 100%,var(--gl2),transparent 40%),linear-gradient(160deg,var(--g1),var(--nav) 55%,var(--g2))!important;padding:70px 32px 84px}
+.hero h1{font-weight:800;letter-spacing:-.025em;line-height:1.06}.hero p{color:#c9dcdc}
+.hero .cta .b-pri{background:var(--acc);border-color:var(--acc);color:#1a1200;font-weight:700}
+.trk{padding:22px;color:var(--ink);box-shadow:0 20px 50px rgba(0,0,0,.35);border:0}.trk h3{color:var(--ink);margin:0 0 4px}.hero .trk p{color:var(--mute);margin:0 0 12px}.trk .b-pri{background:var(--pri);border-color:var(--pri);color:#fff}
+.strip div{box-shadow:0 6px 18px rgba(10,21,48,.12)}.strip b{font-weight:800}
+.sec{font-weight:800;letter-spacing:-.02em}
+.stp{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.stp div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}.stp b{display:flex;width:36px;height:36px;border-radius:50%;background:var(--nav);color:var(--acc);align-items:center;justify-content:center;margin-bottom:12px}.stp strong{display:block;margin-bottom:4px}.stp span{color:var(--mute);font-size:.9rem}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 20px;margin:10px auto;max-width:780px}.faq summary{cursor:pointer;font-weight:700}.faq p{margin:10px 0 0;color:var(--mute)}
+.ctab{margin:56px 0 10px;border-radius:20px;padding:46px 24px;text-align:center;color:#fff;background:radial-gradient(circle at 15% 0,var(--gl2),transparent 50%),linear-gradient(135deg,var(--nav),var(--g2))}.ctab h2{color:#fff;font-weight:800}.ctab p{color:#cfe3e3;margin:0 0 22px}
+.banner{background:radial-gradient(circle at 90% 0,var(--gl),transparent 45%),linear-gradient(120deg,var(--nav),var(--g2))}
+.card{border-radius:14px}.b-pri{background:var(--pri);border-color:var(--pri)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pri:#2fb5b0;--bg:#0b1117}.b-pri,.fab{color:#04201f}}
+@media(max-width:760px){.stp{grid-template-columns:1fr 1fr}}@media(max-width:480px){.stp{grid-template-columns:1fr}}
+
+.sg{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}.sfil{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;margin-bottom:10px}.sfil input{max-width:260px}
+.pill{align-self:flex-start;font-size:.72rem;font-weight:700;padding:2px 10px;border-radius:99px;background:rgb(var(--pr)/.14);color:var(--pri)}
+.back{background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 16px;margin-bottom:16px;cursor:pointer}.back:hover{border-color:var(--pri);color:var(--pri)}
+button.full+button.full{margin-top:10px}
+.docbox{border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:12px;background:var(--head);text-align:center}.docbox img,.docbox canvas{max-width:100%;height:auto;border-radius:6px;margin:8px 0;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.ov{position:fixed;inset:0;background:rgba(5,12,25,.75);z-index:40;display:flex;align-items:center;justify-content:center;padding:16px}.mb{background:var(--card);border-radius:14px;max-width:920px;width:100%;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}.mh{display:flex;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}.mh span{flex:1;margin:0}.mc{overflow:auto;padding:14px;text-align:center}.mc img,.mc canvas{max-width:100%;height:auto}
+.tabs2{display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px 0}
+.tabs{display:flex;gap:8px;margin:22px 0 16px;flex-wrap:wrap}.tabs button{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:9px 20px;font-weight:600}.tabs button.on{background:var(--pri);border-color:var(--pri);color:#fff}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tabs button.on{color:#04201f}}
+.emi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.emi div{background:var(--head);border-radius:10px;padding:10px;text-align:center}.emi span{display:block;font-size:.75rem;color:var(--mute)}.emi b{font-size:1.02rem}
+input[type=range]{padding:0;border:0;accent-color:var(--pri)}.chips2{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.chips2 span{padding:3px 10px;border-radius:99px;background:rgb(var(--pr)/.14);color:var(--pri);font-size:.82rem;font-weight:600}
+.tlv{margin:10px 0 4px}.ts{display:flex;gap:14px;padding-bottom:18px;position:relative}.ts:not(:last-child):before{content:'';position:absolute;left:15px;top:32px;bottom:0;width:2px;background:var(--line)}
+.ts .dot{flex:none;width:32px;height:32px;border-radius:50%;background:var(--head);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--mute)}
+.ts.Approved .dot{background:var(--ok);border-color:var(--ok);color:#fff}.ts.Rejected .dot{background:var(--bad);border-color:var(--bad);color:#fff}.ts.cur .dot{border-color:var(--pri);color:var(--pri);box-shadow:0 0 0 4px rgb(var(--pr)/.18)}
+.rmk{margin-top:6px;padding:8px 12px;border-radius:8px;background:var(--head);border-left:3px solid var(--pri);font-size:.92rem}.ts.Rejected .rmk{border-color:var(--bad)}
+.stp2{display:flex;gap:8px;margin:14px 0}.s2{flex:1;text-align:center;font-size:.82rem;color:var(--mute)}.s2 b{display:flex;width:30px;height:30px;margin:0 auto 4px;border-radius:50%;background:var(--pri);color:#fff;align-items:center;justify-content:center}
+@media(max-width:600px){.emi{grid-template-columns:1fr}}
+.rail{display:grid;grid-template-columns:repeat(4,1fr);margin:16px 0 22px}.rn{text-align:center;position:relative;padding:0 2px}
+.rn:not(:first-child):before{content:'';position:absolute;top:19px;left:-50%;width:100%;height:4px;background:var(--line);z-index:0}.rn.done:not(:first-child):before{background:var(--ok)}.rn.bad:not(:first-child):before{background:var(--bad)}.rn.cur:not(:first-child):before{background:linear-gradient(90deg,var(--ok),var(--line))}
+.rn .c{position:relative;z-index:1;width:42px;height:42px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-weight:800;background:var(--card);border:3px solid var(--line);color:var(--mute)}
+.rn.done .c{background:var(--ok);border-color:var(--ok);color:#fff}.rn.bad .c{background:var(--bad);border-color:var(--bad);color:#fff}.rn.cur .c{border-color:var(--pri);color:var(--pri);animation:pls 1.6s infinite}
+@keyframes pls{0%{box-shadow:0 0 0 0 rgb(var(--pr)/.5)}100%{box-shadow:0 0 0 12px rgb(var(--pr)/0)}}
+.rn b{display:block;font-size:.82rem}.rn small{color:var(--mute);font-size:.72rem}
+.sc{display:flex;gap:14px;padding:14px 16px;border:1px solid var(--line);border-left:5px solid var(--line);border-radius:12px;margin:10px 0;background:var(--card)}.sc.Approved{border-left-color:var(--ok)}.sc.Rejected{border-left-color:var(--bad)}.sc.cur{border-left-color:var(--pri);background:rgb(var(--pr)/.07)}
+.av{flex:none;width:42px;height:42px;border-radius:50%;background:var(--nav);color:var(--acc);display:flex;align-items:center;justify-content:center;font-weight:700}
+.hd2{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}.hd2 h3{margin:0}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}.dcard{text-align:left;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}.dcard.on{border-color:var(--pri);box-shadow:0 0 0 3px rgb(var(--pr)/.25)}.dcard b{display:block}
+.dn{font-size:1.8rem;font-weight:800;line-height:1.1;margin-top:6px}.dmeta{display:flex;gap:8px;margin-top:6px;font-size:.82rem;font-weight:700}.dmeta .ok{color:var(--ok)}.dmeta .bd{color:var(--bad)}.dmeta .pd{color:var(--warn)}
+.fpv{display:flex;gap:12px;align-items:center;margin:8px 0 4px;padding:10px;border:1px dashed var(--line);border-radius:10px;background:var(--head)}.fpv img{width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}.pdfic{width:64px;height:64px;flex:none;border-radius:8px;background:#dc3545;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.ne{border-top-color:var(--bad)!important}
+.kind{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 18px}.kcard{text-align:left;padding:18px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}.kcard b{display:block;font-size:1.15rem}.kcard span{color:var(--mute);font-size:.9rem}.kcard.on{border-color:var(--pri);box-shadow:0 0 0 4px rgb(var(--pr)/.15)}
+.hint{display:block;color:var(--mute);font-size:.78rem;margin-top:3px}.pv{border-top-color:#f59e0b!important}.pv .pill{background:rgba(245,158,11,.2);color:#b45309}
+@media(max-width:600px){.kind{grid-template-columns:1fr}}
+
+:root{--nav:#0e1a35;--acc:#f59e0b;--g1:#0a1530;--g2:#10404a;--gl:rgba(45,212,191,.32);--gl2:rgba(245,158,11,.18);--pr:14 124 123}
+.feat svg,.stat svg{color:var(--pri)}
+:root[data-skin=blue]{--pri:#2563eb;--pr:37 99 235;--nav:#0b2a6f;--acc:#ffb703;--g1:#06173f;--g2:#1d4ed8;--gl:rgba(96,165,250,.38);--gl2:rgba(255,183,3,.18)}
+:root[data-skin=green]{--pri:#15803d;--pr:21 128 61;--nav:#0b3d2e;--acc:#ff9933;--g1:#062a20;--g2:#15803d;--gl:rgba(74,222,128,.30);--gl2:rgba(255,153,51,.22)}
+:root[data-skin=violet]{--pri:#7c3aed;--pr:124 58 237;--nav:#1e1b4b;--acc:#22d3ee;--g1:#12102e;--g2:#5b21b6;--gl:rgba(167,139,250,.38);--gl2:rgba(34,211,238,.16)}
+:root[data-skin=maroon]{--pri:#be123c;--pr:190 18 60;--nav:#3b0d11;--acc:#f2b705;--g1:#260709;--g2:#9f1239;--gl:rgba(251,146,60,.30);--gl2:rgba(242,183,5,.2)}
+:root[data-skin=emerald]{--pri:#047857;--pr:4 120 87;--nav:#0a0f1f;--acc:#fbbf24;--g1:#05080f;--g2:#065f46;--gl:rgba(52,211,153,.30);--gl2:rgba(251,191,36,.16)}
+@media (prefers-color-scheme:dark){:root[data-skin]:not([data-skin=teal]):not([data-pastel]):not([data-theme="light"]) :is(.b-pri,.fab){color:#fff}:root[data-skin]:not([data-skin=teal]):not([data-pastel]):not([data-theme="light"]) .tabs button.on{color:#fff}:root[data-skin]:not([data-skin=teal]):not([data-pastel]):not([data-theme="light"]) .hero .cta .b-pri{color:#1a1200}}
+:root[data-font=serif]{--font:'Merriweather'}:root[data-font=clean]{--font:'Inter'}
+:root[data-shape=sharp] :is(.card,button:not(.fab),input,select,textarea,.alert,.kcard,.dcard,.sc,.mb,.panel,.banner,.hero,.ctab,.authbox,.fpv,.emi div,.strip div,.stp div,.faq details,.rmk,.lkp){border-radius:3px!important}
+:root[data-shape=sharp] .card,:root[data-shape=sharp] .strip div{box-shadow:none}
+.lkb{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:10px 16px;font-weight:600;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.lkp{position:fixed;left:16px;bottom:calc(70px + env(safe-area-inset-bottom,0px));width:min(340px,calc(100vw - 32px));max-height:75vh;overflow:auto;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:0 12px 36px rgba(0,0,0,.3);z-index:20}
+.lkp b{display:block;margin:12px 0 6px;font-size:.78rem;color:var(--mute);text-transform:uppercase;letter-spacing:.05em}.lkp b:first-child{margin-top:0}
+.sw{display:grid;grid-template-columns:1fr 1fr;gap:8px}.sw button{display:flex;align-items:center;gap:8px;text-align:left;padding:6px;font-size:.8rem;line-height:1.2}.sw button.on{border-color:var(--pri);box-shadow:0 0 0 2px rgb(var(--pr)/.3)}
+.sw i{position:relative;width:34px;height:34px;border-radius:8px;flex:none;display:block}.sw u{position:absolute;right:3px;bottom:3px;width:11px;height:11px;border-radius:50%}
+.sg2{display:flex;gap:6px}.sg2 button{flex:1;font-size:.85rem;padding:6px}.sg2 button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+
+:root[data-skin=sage]{--bg:#f4f1e6;--card:#ffffff;--ink:#33412f;--mute:#657361;--line:#e3dcc7;--head:#efe9d6;--pri:#3f5a3a;--pr:63 90 58;--nav:#33412f;--acc:#f7dc8e;--g1:#33412f;--g2:#b7d3b0;--gl:rgba(255,255,255,.0);--gl2:rgba(255,255,255,.0);--ok:#4f8a4a;--warn:#c99a10;--bad:#c4503a;--infobg:#e3eef7;--infoink:#24465f;--okbg:#e2efdc;--okink:#27401f}
+@media (prefers-color-scheme:dark){:root[data-skin=sage]:not([data-theme="light"]){--bg:#1c211a;--card:#262d23;--ink:#ece8d8;--mute:#a9b3a2;--line:#3a4435;--head:#2e3629;--pri:#9fcf98;--pr:159 207 152;--nav:#33412f;--infobg:#24394a;--infoink:#bcd8ec;--okbg:#27402a;--okink:#cfe8c9}}
+:root[data-skin=sage][data-theme="dark"]{--bg:#1c211a;--card:#262d23;--ink:#ece8d8;--mute:#a9b3a2;--line:#3a4435;--head:#2e3629;--pri:#9fcf98;--pr:159 207 152;--infobg:#24394a;--infoink:#bcd8ec;--okbg:#27402a;--okink:#cfe8c9}
+:root[data-pastel] .nb{background:var(--bg)!important;color:var(--ink);border-bottom:1px solid var(--line)!important}
+:root[data-pastel] .nb .ghost,:root[data-pastel] .nb .b-w{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+:root[data-pastel] .nb .b-warn{background:#f7dc8e;color:#33412f;border-color:#e8c864}
+:root[data-pastel] .logo svg path{fill:#f2b968}:root[data-pastel] .logo svg rect{fill:var(--ink)}
+:root[data-pastel] .hero{background:#b7d3b0!important;color:#33412f;border-radius:26px;margin:0 0 16px;padding:36px 30px;box-shadow:none}
+:root[data-pastel] .hero h1{color:#2a3a26}:root[data-pastel] .hero p{color:#44573f}
+:root[data-pastel] .hero .cta .b-pri{background:#33412f;border-color:#33412f;color:#f4f1e6}
+:root[data-pastel] .hero .cta button:not(.b-pri){background:transparent;color:#33412f;border-color:#33412f}
+:root[data-pastel] .trk{border:0;box-shadow:none;border-radius:20px;color:var(--ink)}
+:root[data-pastel] .strip{margin-top:12px}
+:root[data-pastel] .strip div{border:0;box-shadow:none;border-radius:20px;color:#33412f}
+:root[data-pastel] .strip div:nth-child(1){background:#f7dc8e}:root[data-pastel] .strip div:nth-child(2){background:#f6b79a}:root[data-pastel] .strip div:nth-child(3){background:#a9c7de}:root[data-pastel] .strip div:nth-child(4){background:#cdbfe6}
+:root[data-pastel] .strip b{color:#33412f}:root[data-pastel] .strip span{color:#4a5c45}
+:root[data-pastel] .feat{border:0;box-shadow:none;border-radius:20px;color:#33412f}:root[data-pastel] .feat p{color:#4a5c45}:root[data-pastel] .feat .more{color:#33412f;font-weight:600}:root[data-pastel] .feat svg{background:rgba(255,255,255,.55);color:#33412f}
+:root[data-pastel] .feat:nth-child(6n+1){background:#fde7c7}:root[data-pastel] .feat:nth-child(6n+2){background:#cdbfe6}:root[data-pastel] .feat:nth-child(6n+3){background:#a9c7de}:root[data-pastel] .feat:nth-child(6n+4){background:#f6b79a}:root[data-pastel] .feat:nth-child(6n+5){background:#b7d3b0}:root[data-pastel] .feat:nth-child(6n+6){background:#f7dc8e}
+:root[data-pastel] .kcard{border:2px solid transparent;border-radius:20px;color:#33412f}:root[data-pastel] .kcard span{color:#4a5c45}
+:root[data-pastel] .kcard:nth-child(1){background:#a9c7de}:root[data-pastel] .kcard:nth-child(2){background:#cdbfe6}:root[data-pastel] .kcard.on{border-color:#33412f;box-shadow:none}
+:root[data-pastel] .card{border-radius:20px;box-shadow:none;border-color:var(--line)}
+:root[data-pastel] .grid>.stat{border:0;color:#33412f}:root[data-pastel] .grid>.stat span{color:#4a5c45}
+:root[data-pastel] .grid>.stat:nth-child(4n+1){background:#fde7c7}:root[data-pastel] .grid>.stat:nth-child(4n+2){background:#a9c7de}:root[data-pastel] .grid>.stat:nth-child(4n+3){background:#b7d3b0}:root[data-pastel] .grid>.stat:nth-child(4n+4){background:#f6b79a}
+:root[data-pastel] .banner{background:#b7d3b0!important;color:#33412f;border-radius:24px}:root[data-pastel] .banner h2{color:#2a3a26}:root[data-pastel] .banner p{color:#44573f}
+:root[data-pastel] .ctab{background:#b7d3b0!important;border-radius:26px}:root[data-pastel] .ctab h2{color:#2a3a26}:root[data-pastel] .ctab p{color:#44573f}
+:root[data-pastel] .stp b,:root[data-pastel] .av{background:#33412f;color:#f7dc8e}
+:root[data-pastel] .stp div{border-radius:20px;border:0}:root[data-pastel] .stp div:nth-child(4n+1){background:#fde7c7;color:#33412f}:root[data-pastel] .stp div:nth-child(4n+2){background:#cdbfe6;color:#33412f}:root[data-pastel] .stp div:nth-child(4n+3){background:#a9c7de;color:#33412f}:root[data-pastel] .stp div:nth-child(4n+4){background:#f6b79a;color:#33412f}:root[data-pastel] .stp span{color:#4a5c45}
+:root[data-pastel] .aside{background:#b7d3b0}:root[data-pastel] .aside h2,:root[data-pastel] .aside p,:root[data-pastel] .aside li{color:#2a3a26}
+:root[data-pastel] .authbox{border-radius:26px}
+:root[data-pastel] .tabs button.on{background:#33412f;border-color:#33412f;color:#f4f1e6!important}
+:root[data-pastel] .b-pri,:root[data-pastel] .fab{background:var(--pri);border-color:var(--pri);color:#fff}
+@media (prefers-color-scheme:dark){:root[data-pastel]:not([data-theme="light"]) :is(.b-pri,.fab){background:var(--pri);border-color:var(--pri);color:#1b1625}}
+:root[data-pastel] .badge{border-radius:99px}
+:root[data-pastel] .Pending{background:#f7dc8e;color:#4a3b00}:root[data-pastel] .Under{background:#a9c7de;color:#1f3a52}:root[data-pastel] .Approved{background:#b7d3b0;color:#27401f}:root[data-pastel] .Rejected{background:#f2a58f;color:#5b1d12}
+:root[data-pastel] .rn .c{background:var(--card)}:root[data-pastel] .rn.done .c{background:#8fb98a;border-color:#8fb98a;color:#27401f}:root[data-pastel] .rn.cur .c{background:#f7dc8e;border-color:#33412f;color:#33412f}:root[data-pastel] .rn.bad .c{background:#f2a58f;border-color:#f2a58f;color:#5b1d12}
+:root[data-pastel] .rn.done:not(:first-child):before{background:#8fb98a}:root[data-pastel] .rn.bad:not(:first-child):before{background:#f2a58f}:root[data-pastel] .rn.cur:not(:first-child):before{background:linear-gradient(90deg,#8fb98a,var(--line))}
+:root[data-pastel] .sc{border-radius:20px}:root[data-pastel] .sc.Approved{border-left-color:#8fb98a}:root[data-pastel] .sc.Rejected{border-left-color:#f2a58f}:root[data-pastel] .sc.cur{background:rgb(247 220 142/.25);border-left-color:#e0b93a}
+:root[data-pastel] .pill{background:#e8efe0;color:#33512e}:root[data-pastel] .pv .pill{background:#f1e4ff;color:#5b3c8a}
+:root[data-pastel] footer{background:#33412f;color:#e5e8d8}
+:root[data-pastel] .dcard.on,:root[data-pastel] .sw button.on{border-color:#33412f}
+
+:root[data-pastel] .strip div:nth-child(1){background:var(--c1,#f7dc8e)}:root[data-pastel] .strip div:nth-child(2){background:var(--c2,#f6b79a)}:root[data-pastel] .strip div:nth-child(3){background:var(--c3,#a9c7de)}:root[data-pastel] .strip div:nth-child(4){background:var(--c4,#cdbfe6)}
+:root[data-pastel] .feat:nth-child(6n+1){background:var(--c1,#fde7c7)}:root[data-pastel] .feat:nth-child(6n+2){background:var(--c2,#cdbfe6)}:root[data-pastel] .feat:nth-child(6n+3){background:var(--c3,#a9c7de)}:root[data-pastel] .feat:nth-child(6n+4){background:var(--c4,#f6b79a)}:root[data-pastel] .feat:nth-child(6n+5){background:var(--c5,#b7d3b0)}:root[data-pastel] .feat:nth-child(6n+6){background:var(--c6,#f7dc8e)}
+:root[data-pastel] .kcard:nth-child(1){background:var(--c3,#a9c7de)}:root[data-pastel] .kcard:nth-child(2){background:var(--c2,#cdbfe6)}
+:root[data-pastel] .grid>.stat:nth-child(4n+1){background:var(--c1,#fde7c7)}:root[data-pastel] .grid>.stat:nth-child(4n+2){background:var(--c3,#a9c7de)}:root[data-pastel] .grid>.stat:nth-child(4n+3){background:var(--c5,#b7d3b0)}:root[data-pastel] .grid>.stat:nth-child(4n+4){background:var(--c4,#f6b79a)}
+:root[data-pastel] .stp div:nth-child(4n+1){background:var(--c1,#fde7c7)}:root[data-pastel] .stp div:nth-child(4n+2){background:var(--c2,#cdbfe6)}:root[data-pastel] .stp div:nth-child(4n+3){background:var(--c3,#a9c7de)}:root[data-pastel] .stp div:nth-child(4n+4){background:var(--c4,#f6b79a)}
+.pbar{height:10px;border-radius:10px;background:var(--line);margin:6px 0 4px;overflow:hidden}.pbar i{display:block;height:100%;border-radius:10px;background:var(--grad,#8fb98a)}
+:root[data-skin=dusk]{--bg:#fbf3ee;--card:#ffffff;--ink:#4a2c55;--mute:#7b5a86;--line:#efdde4;--head:#f6e8ec;--pri:#6b3d7d;--pr:107 61 125;--nav:#4a2c55;--acc:#f4b79b;--g1:#4a2c55;--g2:#9a5f86;--o1:#4a2c55;--o2:#9a5f86;--o3:#f4b79b;--grad:linear-gradient(90deg,#4a2c55,#9a5f86 55%,#f4b79b);--ok:#4f8a4a;--warn:#c99a10;--bad:#c4503a;--infobg:#efe0ea;--infoink:#4a2c55;--okbg:#e4f0df;--okink:#27401f;--c1:#efe0ea;--c2:#fbe3d6;--c3:#e9d3e3;--c4:#fcd5c2;--c5:#f3dfe8;--c6:#fdeadc}
+@media (prefers-color-scheme:dark){:root[data-skin=dusk]:not([data-theme="light"]){--bg:#1f1626;--card:#2a2032;--ink:#f1e6f0;--mute:#c3aec6;--line:#42334a;--head:#33283b;--pri:#e0a8cd;--pr:224 168 205;--infobg:#2b2f4a;--infoink:#dfe3f7;--okbg:#27402a;--okink:#cfe8c9}}
+:root[data-skin=dusk][data-theme="dark"]{--bg:#1f1626;--card:#2a2032;--ink:#f1e6f0;--mute:#c3aec6;--line:#42334a;--head:#33283b;--pri:#e0a8cd;--pr:224 168 205;--okbg:#27402a;--okink:#cfe8c9}
+:root[data-skin=dusk] .hero{background:linear-gradient(135deg,#4a2c55 0%,#9a5f86 45%,#f4b79b 100%)!important;color:#fff}
+:root[data-skin=dusk] .hero h1{color:#fff}:root[data-skin=dusk] .hero p{color:#f6e4ee}
+:root[data-skin=dusk] .hero .cta .b-pri{background:#fbf3ee;border-color:#fbf3ee;color:#4a2c55}
+:root[data-skin=dusk] .hero .cta button:not(.b-pri){background:transparent;color:#fff;border-color:#fff}
+:root[data-skin=dusk] .banner{background:linear-gradient(100deg,#4a2c55,#9a5f86 62%,#f4b79b)!important;color:#fff}:root[data-skin=dusk] .banner h2{color:#fff}:root[data-skin=dusk] .banner p{color:#f6e4ee}
+:root[data-skin=dusk] .ctab{background:linear-gradient(135deg,#4a2c55,#9a5f86)!important}:root[data-skin=dusk] .ctab h2{color:#fff}:root[data-skin=dusk] .ctab p{color:#f6e4ee}
+:root[data-skin=dusk] .aside{background:linear-gradient(160deg,#4a2c55,#9a5f86 62%,#f4b79b)}:root[data-skin=dusk] .aside h2,:root[data-skin=dusk] .aside p,:root[data-skin=dusk] .aside li{color:#fff}
+:root[data-skin=dusk] .tabs button.on{background:#4a2c55;border-color:#4a2c55;color:#fff!important}
+:root[data-skin=dusk] .stp b,:root[data-skin=dusk] .av{background:#4a2c55;color:#f4b79b}
+:root[data-skin=dusk] footer{background:#4a2c55;color:#e9e4f0}
+:root[data-skin=dusk] .logo svg path{fill:#f4b79b}
+:root[data-skin=dusk] .nb .b-warn{background:#f4b79b;color:#4a2c55;border-color:#f4b79b}
+:root[data-skin=dusk] :is(.strip div,.feat,.kcard,.grid>.stat,.stp div){color:#4a2c55}
+:root[data-skin=dusk] :is(.feat p,.strip span,.kcard span,.grid>.stat span,.stp span){color:#6b4a75}
+:root[data-skin=dusk] .strip b{color:#4a2c55}:root[data-skin=dusk] .feat svg{color:#4a2c55}:root[data-skin=dusk] .feat .more{color:#4a2c55}
+:root[data-skin=dusk] .pill{background:rgb(var(--pr)/.14);color:var(--pri)}:root[data-skin=dusk] .pv .pill{background:#fde7c7;color:#8a4b0f}
+:root[data-skin=dusk] .rn.done .c{background:#9a5f86;border-color:#9a5f86;color:#fff}:root[data-skin=dusk] .rn.cur .c{background:#f4b79b;border-color:#4a2c55;color:#4a2c55}
+:root[data-skin=dusk] .rn.done:not(:first-child):before{background:linear-gradient(90deg,#4a2c55,#9a5f86)}:root[data-skin=dusk] .rn.cur:not(:first-child):before{background:linear-gradient(90deg,#9a5f86,#f4b79b)}
+:root[data-skin=dusk] .sc.Approved{border-left-color:#9a5f86}:root[data-skin=dusk] .sc.cur{background:rgb(var(--pr)/.1);border-left-color:#f4b79b}
+:root[data-skin=dusk] .dcard.on,:root[data-skin=dusk] .sw button.on{border-color:#4a2c55}
+:root[data-skin=twilight]{--bg:#f4f1f6;--card:#ffffff;--ink:#26335c;--mute:#59639a;--line:#e3e0ea;--head:#ece9f3;--pri:#3a4a85;--pr:58 74 133;--nav:#26335c;--acc:#f2b8c6;--g1:#26335c;--g2:#7c86b8;--o1:#26335c;--o2:#7c86b8;--o3:#f2b8c6;--grad:linear-gradient(90deg,#26335c,#7c86b8 55%,#f2b8c6);--ok:#4f8a4a;--warn:#c99a10;--bad:#c4503a;--infobg:#e2e5f3;--infoink:#26335c;--okbg:#e4f0df;--okink:#27401f;--c1:#e2e5f3;--c2:#fadde4;--c3:#d5daee;--c4:#f6cdd8;--c5:#e9e3f2;--c6:#fde9ee}
+@media (prefers-color-scheme:dark){:root[data-skin=twilight]:not([data-theme="light"]){--bg:#141a2e;--card:#1d2440;--ink:#e9ecf8;--mute:#aab3d6;--line:#2f3858;--head:#232b4a;--pri:#a9b6ee;--pr:169 182 238;--infobg:#2b2f4a;--infoink:#dfe3f7;--okbg:#27402a;--okink:#cfe8c9}}
+:root[data-skin=twilight][data-theme="dark"]{--bg:#141a2e;--card:#1d2440;--ink:#e9ecf8;--mute:#aab3d6;--line:#2f3858;--head:#232b4a;--pri:#a9b6ee;--pr:169 182 238;--okbg:#27402a;--okink:#cfe8c9}
+:root[data-skin=twilight] .hero{background:linear-gradient(135deg,#26335c 0%,#7c86b8 45%,#f2b8c6 100%)!important;color:#fff}
+:root[data-skin=twilight] .hero h1{color:#fff}:root[data-skin=twilight] .hero p{color:#eceefa}
+:root[data-skin=twilight] .hero .cta .b-pri{background:#f4f1f6;border-color:#f4f1f6;color:#26335c}
+:root[data-skin=twilight] .hero .cta button:not(.b-pri){background:transparent;color:#fff;border-color:#fff}
+:root[data-skin=twilight] .banner{background:linear-gradient(100deg,#26335c,#7c86b8 62%,#f2b8c6)!important;color:#fff}:root[data-skin=twilight] .banner h2{color:#fff}:root[data-skin=twilight] .banner p{color:#eceefa}
+:root[data-skin=twilight] .ctab{background:linear-gradient(135deg,#26335c,#7c86b8)!important}:root[data-skin=twilight] .ctab h2{color:#fff}:root[data-skin=twilight] .ctab p{color:#eceefa}
+:root[data-skin=twilight] .aside{background:linear-gradient(160deg,#26335c,#7c86b8 62%,#f2b8c6)}:root[data-skin=twilight] .aside h2,:root[data-skin=twilight] .aside p,:root[data-skin=twilight] .aside li{color:#fff}
+:root[data-skin=twilight] .tabs button.on{background:#26335c;border-color:#26335c;color:#fff!important}
+:root[data-skin=twilight] .stp b,:root[data-skin=twilight] .av{background:#26335c;color:#f2b8c6}
+:root[data-skin=twilight] footer{background:#26335c;color:#e9e4f0}
+:root[data-skin=twilight] .logo svg path{fill:#f2b8c6}
+:root[data-skin=twilight] .nb .b-warn{background:#f2b8c6;color:#26335c;border-color:#f2b8c6}
+:root[data-skin=twilight] :is(.strip div,.feat,.kcard,.grid>.stat,.stp div){color:#26335c}
+:root[data-skin=twilight] :is(.feat p,.strip span,.kcard span,.grid>.stat span,.stp span){color:#46527f}
+:root[data-skin=twilight] .strip b{color:#26335c}:root[data-skin=twilight] .feat svg{color:#26335c}:root[data-skin=twilight] .feat .more{color:#26335c}
+:root[data-skin=twilight] .pill{background:rgb(var(--pr)/.14);color:var(--pri)}:root[data-skin=twilight] .pv .pill{background:#fde7c7;color:#8a4b0f}
+:root[data-skin=twilight] .rn.done .c{background:#7c86b8;border-color:#7c86b8;color:#fff}:root[data-skin=twilight] .rn.cur .c{background:#f2b8c6;border-color:#26335c;color:#26335c}
+:root[data-skin=twilight] .rn.done:not(:first-child):before{background:linear-gradient(90deg,#26335c,#7c86b8)}:root[data-skin=twilight] .rn.cur:not(:first-child):before{background:linear-gradient(90deg,#7c86b8,#f2b8c6)}
+:root[data-skin=twilight] .sc.Approved{border-left-color:#7c86b8}:root[data-skin=twilight] .sc.cur{background:rgb(var(--pr)/.1);border-left-color:#f2b8c6}
+:root[data-skin=twilight] .dcard.on,:root[data-skin=twilight] .sw button.on{border-color:#26335c}
+</style>
+</head>
+<body>
+<div class="nb"><div class="in"><div class="logo" data-a="home"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 11l9-8 9 8v10H3z" style="fill:var(--acc)"/><rect x="9.5" y="13" width="5" height="8" style="fill:var(--nav)"/></svg>Digital Housing Portal</div><div class="nav" id="nav"></div></div></div>
+<div class="wrap" id="app"></div>
+<div id="modal"></div>
+<div id="look"></div>
+<div id="bot"></div>
+<footer>🏠 Digital Housing Scheme Portal · Bannari Amman Institute of Technology · Project 2026AC397 · v11</footer>
+<script>
+const SELF_SCRIPT=document.currentScript?document.currentScript.textContent:'';let dlAPI=null;
+const CATS=['Central','Tamil Nadu','Income-based'];
+const SCHD=[['PMAY – Urban','Central','PMAY-U 2.0: housing support for EWS, LIG and MIG urban families (income up to ₹9 lakh) without a pucca house.'],
+['PMAY – Gramin','Central','Pucca house assistance for eligible rural households without a pucca house.'],
+['Beneficiary-Led Construction','Central','PMAY-U 2.0 vertical: assistance to build or enhance a house on your own land (EWS families).'],
+['Interest Subsidy Scheme (ISS) – Home Loan','Central','PMAY-U 2.0 interest subsidy on home loans for EWS, LIG and MIG families (replaced CLSS).'],
+['Affordable Housing in Partnership (AHP)','Central','PMAY-U 2.0 vertical: homes built with public or private partners and allotted to eligible EWS families.'],
+['Affordable Rental Housing','Central','PMAY-U 2.0 vertical: rental homes for urban workers, migrants and students.'],
+['Slum Rehabilitation Scheme','Central','In-situ redevelopment and housing for slum dwellers.'],
+['PM-JANMAN Housing (PVTG families)','Central','Pucca houses for Particularly Vulnerable Tribal Group households in rural areas.'],
+['Tamil Nadu Housing Scheme','Tamil Nadu','State housing support programme for eligible families.'],
+['Kalaignar Kanavu Illam','Tamil Nadu','Concrete house (about ₹3.5 lakh assistance) for rural hut households under the hut-free Tamil Nadu mission.'],
+['Chief Minister Green House Scheme','Tamil Nadu','Eco-friendly houses for rural households without a pucca house.'],
+['TNUHDB Tenement Allotment','Tamil Nadu','Allotment of tenements built by the Urban Habitat Development Board.'],
+['TNHB Flat / Plot Allotment','Tamil Nadu','Flats, plots and houses built by the Tamil Nadu Housing Board for different income groups.'],
+['Free House Site Patta (TN)','Tamil Nadu','Free house-site patta for landless poor families.'],
+['TN Cooperative Housing & Repair Loan','Tamil Nadu','Housing and repair loans through district cooperative central banks for members.'],
+['Rural Home Renovation Scheme','Tamil Nadu','Funds to repair and renovate old rural houses.'],
+['Adi Dravidar & Tribal Housing Support','Tamil Nadu','Housing support for SC / ST families without a pucca house.'],
+['EWS Housing','Income-based','Homes for Economically Weaker Section families (income up to ₹3 lakh).'],
+['LIG Housing','Income-based','Homes for Low Income Group families (₹3 – 6 lakh).'],
+['MIG Housing','Income-based','Housing support for Middle Income Group families (₹6 – 9 lakh).'],
+['HDFC Home Loan','Private Home Loan','Private bank home loan to buy a ready or under-construction home. Salaried and self-employed.'],
+['ICICI Bank Home Loan','Private Home Loan','Private bank home loan for purchase or construction with digital document upload.'],
+['Axis Bank Home Loan','Private Home Loan','Private bank home loan for salaried and self-employed borrowers.'],
+['Kotak Mahindra Home Loan','Private Home Loan','Private bank home loan with a higher credit-score requirement.'],
+['Bajaj Housing Finance Home Loan','Private Home Loan','Housing finance company loan with a wider age limit for self-employed applicants.'],
+['Tata Capital Housing Loan','Private Home Loan','Housing finance company loan for purchase, construction and extension.'],
+['Home Construction Loan (Private Bank)','Private Home Loan','Loan to build a house on land you already own.'],
+['Home Improvement / Renovation Loan','Private Home Loan','Loan to repair, renovate or extend a house you own.'],
+['Plot Purchase Loan (Private Bank)','Private Home Loan','Loan to buy a residential plot.']];
+const SCH=SCHD.map(x=>x[0]);
+const PCAT='Private Home Loan',RATE=9;
+const PP={'HDFC Home Loan':{inc:300000,cib:700,am:[60,65]},'ICICI Bank Home Loan':{inc:300000,cib:700,am:[60,65]},'Axis Bank Home Loan':{inc:300000,cib:700,am:[60,65]},'Kotak Mahindra Home Loan':{inc:300000,cib:750,am:[60,65]},'Bajaj Housing Finance Home Loan':{inc:240000,cib:700,am:[65,70]},'Tata Capital Housing Loan':{inc:240000,cib:700,am:[65,70]},'Home Construction Loan (Private Bank)':{inc:300000,cib:700,am:[60,65],need:'land'},'Home Improvement / Renovation Loan':{inc:240000,cib:700,am:[60,65],need:'house'},'Plot Purchase Loan (Private Bank)':{inc:300000,cib:750,am:[60,65]}};
+const CIB=['750 and above','700 – 749','650 – 699','Below 650','No credit history'];
+const DOCB=['Aadhaar Card','Income Certificate','Address Proof (Ration Card / Voter ID)','Passport-size Photo','Bank Passbook (first page)'];
+const LAND='Land Ownership Document (Patta / Chitta)';
+const DOCX={'PMAY – Gramin':LAND,'Beneficiary-Led Construction':LAND,'Kalaignar Kanavu Illam':LAND,'Chief Minister Green House Scheme':LAND,'Rural Home Renovation Scheme':LAND,'Interest Subsidy Scheme (ISS) – Home Loan':'Home Loan Sanction Letter','Adi Dravidar & Tribal Housing Support':'Community Certificate','PM-JANMAN Housing (PVTG families)':'Community Certificate','Free House Site Patta (TN)':'Landless Declaration (VAO)','TN Cooperative Housing & Repair Loan':'Cooperative Society Membership Proof','Slum Rehabilitation Scheme':'Slum Residence Proof','Affordable Rental Housing':'Employment / Migration Proof'};
+const reqDocs=(sc,p)=>{p=p||(me()&&me().p)||{};if(PP[sc]){const se=p.emp==='Self-employed',pd={'Home Construction Loan (Private Bank)':'Property Title + Construction Estimate','Home Improvement / Renovation Loan':'Ownership Proof + Renovation Estimate','Plot Purchase Loan (Private Bank)':'Plot Documents (sale agreement / title)'}[sc]||'Property Documents (sale agreement / allotment letter)';return['PAN Card','Aadhaar Card (KYC)','Address Proof','Passport-size Photo','Bank Statement (last 6 months)',...(se?['ITR (last 2–3 years)','Business Proof (GST / licence / registration)']:['Salary Slips (last 3 months)','Form 16 / Employment Proof']),pd]}return DOCX[sc]?[...DOCB,DOCX[sc]]:DOCB};
+const docsOf=a=>a.docs||(a.ddata?[{label:'Document',name:a.doc,size:a.dsz,type:a.dtype,data:a.ddata,ok:null}]:[]);
+const LIM={'EWS Housing':[0,300000],'LIG Housing':[300001,600000],'MIG Housing':[600001,1800000]};
+function checks(a){const r=a.prof?elig(a.prof,a.scheme).r.map(x=>x.slice()):[],rq=reqDocs(a.scheme,a.prof).length,dc=docsOf(a).length;r.push([dc>=rq,'Documents submitted: '+dc+' of '+rq]);
+ if(a.loan){const c=loanCalc(a.prof,a.loan.amt,a.loan.yrs,a.loan.pv);r.push([a.loan.amt<=c.maxL,'Loan '+fin(a.loan.amt)+' is within the '+ltvMax(a.loan.pv)+'% LTV limit of '+fin(c.maxL)]);r.push([a.loan.amt<=c.maxInc,'EMI about '+fin(Math.round(c.emi))+' fits within income (max loan by income '+fin(Math.round(c.maxInc))+')'])}
+ r.push([!D.apps.some(x=>x.id!==a.id&&x.email===a.email&&x.scheme===a.scheme&&x.status!=='Rejected'),'No other active application by this citizen for the same scheme']);return r}
+ function docInputs(sc){if(!sc)return'<p class="sub">Select a scheme to see the required documents.</p>';
+ return'<h3 style="margin:22px 0 4px">3. Upload documents</h3><p class="sub" style="margin:0 0 6px">PDF, JPG or PNG, up to 700 KB each.</p>'+reqDocs(sc).map((l,i)=>`<label><b>${i+1}. ${l}</b></label><input class="dfile" data-l="${esc(l)}" data-i="${i}" type="file" accept=".pdf,.jpg,.jpeg,.png"><div class="fp"></div>`).join('')}
+function docSec(a){const L=docsOf(a);if(!L.length)return'<h3 style="margin-top:20px">Documents</h3><p class="sub">No files stored for this older application.</p>';
+ const st=d=>d.ok===true?'<span class="badge Approved">Verified</span>':d.ok===false?'<span class="badge Rejected">Rejected</span>':'<span class="badge Pending">Not verified</span>',open=a.status!=='Approved'&&a.status!=='Rejected';
+ return`<h3 style="margin-top:20px">Documents (${L.length})</h3><div class="tw"><table><tr><th>Document</th><th>File</th><th>Status</th><th></th></tr>${L.map((d,i)=>`<tr><td>${esc(d.label)}</td><td>${esc(d.name)}${d.size?' · '+Math.round(d.size/1024)+' KB':''}</td><td>${st(d)}</td><td style="white-space:nowrap"><button class="sm" data-a="odoc" data-id="${a.id}" data-i="${i}">📄 View</button>${isO()&&canAct(a)&&a.cur===0?` <button class="sm b-ok" data-a="dv" data-i="${i}" data-v="1">✓ Verify</button> <button class="sm b-bad" data-a="dv" data-i="${i}" data-v="0">✗ Reject</button>`:''}</td></tr>`).join('')}</table></div>`}
+function chkSec(a){return isO()?'<h3 style="margin-top:20px">Automatic eligibility check</h3>'+checks(a).map(c=>`<div style="margin:5px 0">${c[0]?'✅':'⚠️'} ${c[1]}</div>`).join(''):''}
+const OFF=[{email:'verify@housing.gov',pw:'verify123',name:'Verification Officer',lvl:1},{email:'central@housing.gov',pw:'central123',name:'Central Schemes Officer',lvl:2,cats:['Central']},{email:'tn@housing.gov',pw:'tn12345',name:'Tamil Nadu Schemes Officer',lvl:2,cats:['Tamil Nadu']},{email:'income@housing.gov',pw:'income123',name:'Income-based Schemes Officer',lvl:2,cats:['Income-based']},{email:'collector@housing.gov',pw:'collector123',name:'District Collector',lvl:3},
+{email:'exec@bank.com',pw:'exec123',name:'Loan Executive',lvl:1,kind:'Pvt'},{email:'credit@bank.com',pw:'credit123',name:'Credit Manager',lvl:2,kind:'Pvt',cats:[PCAT]},{email:'sanction@bank.com',pw:'sanction123',name:'Sanction Manager',lvl:3,kind:'Pvt'}];
+const COMM=['OC','BC','MBC / DNC','SC','SCA','ST'],EMP=['Government employee','Private employee','Self-employed','Farmer','Daily-wage worker','Unemployed','Student','Homemaker'],HOUSE=['No house','Rented house','Kutcha (hut)','Semi-pucca','Pucca'],SPEC=['None','Widow / Destitute woman','Differently-abled','Transgender','Ex-serviceman'];
+const DIST=['Ariyalur','Chengalpattu','Chennai','Coimbatore','Cuddalore','Dharmapuri','Dindigul','Erode','Kallakurichi','Kancheepuram','Karur','Krishnagiri','Madurai','Mayiladuthurai','Nagapattinam','Kanniyakumari','Namakkal','Perambalur','Pudukkottai','Ramanathapuram','Ranipet','Salem','Sivaganga','Tenkasi','Thanjavur','Theni','Thiruvallur','Thiruvarur','Thoothukudi','Tiruchirappalli','Tirunelveli','Tirupathur','Tiruppur','Tiruvannamalai','The Nilgiris','Vellore','Viluppuram','Virudhunagar'];
+const VEH=['None','Two-wheeler (bike / scooter)','Four-wheeler (car)','Both'];
+const PSTT=['KYC & Document Verification','Credit Assessment (CIBIL, FOIR)','Sanction & Offer Letter'];
+const STT=['Document Verification','Scheme Eligibility Review','Final Sanction'];
+const sd=n=>SCHD.find(x=>x[0]===n),fin=n=>'₹'+Number(n).toLocaleString('en-IN');
+const ageOf=p=>p&&p.dob?Math.floor((Date.now()-new Date(p.dob))/31557600000):0;
+const rIn=(p,m)=>[+p.income<=m,'Annual income '+fin(+p.income||0)+' (limit '+fin(m)+')'],rLand=(p,c)=>[+p.land>=c,'Owns at least '+c+' cent of land (you have '+(+p.land||0)+')'],rArea=(p,a)=>[p.area===a,a+' area resident'],rNo=p=>[p.house!=='Pucca','Family does not own a pucca house'];
+const RULES={'PMAY – Urban':p=>[rArea(p,'Urban'),rNo(p),rIn(p,900000)],'PMAY – Gramin':p=>[rArea(p,'Rural'),rNo(p)],'Beneficiary-Led Construction':p=>[rLand(p,1),rNo(p),rIn(p,300000)],
+'Interest Subsidy Scheme (ISS) – Home Loan':p=>[[ageOf(p)>=21&&ageOf(p)<=65,'Age between 21 and 65 (you are '+ageOf(p)+')'],[!['Unemployed','Student','Homemaker'].includes(p.emp),'Has a regular income source for loan repayment'],rNo(p),rIn(p,900000)],
+'Affordable Housing in Partnership (AHP)':p=>[rArea(p,'Urban'),rNo(p),rIn(p,300000)],'Affordable Rental Housing':p=>[rArea(p,'Urban'),rNo(p),rIn(p,600000)],
+'Slum Rehabilitation Scheme':p=>[rArea(p,'Urban'),[['Kutcha (hut)','Semi-pucca','Rented house'].includes(p.house),'Living in a hut, semi-pucca or rented house'],rIn(p,300000)],
+'PM-JANMAN Housing (PVTG families)':p=>[[p.community==='ST','Belongs to Scheduled Tribe community'],rArea(p,'Rural'),rNo(p)],
+'Tamil Nadu Housing Scheme':p=>[rNo(p),rIn(p,300000)],'Kalaignar Kanavu Illam':p=>[rArea(p,'Rural'),rLand(p,1.5),[['Kutcha (hut)','Semi-pucca'].includes(p.house),'Living in a hut (thatched / mud / asbestos roof) or semi-pucca house']],
+'Chief Minister Green House Scheme':p=>[rArea(p,'Rural'),rLand(p,1.5),rNo(p)],'TNUHDB Tenement Allotment':p=>[rArea(p,'Urban'),rNo(p),rIn(p,600000)],
+'TNHB Flat / Plot Allotment':p=>[[true,'Resident of Tamil Nadu (district '+(p.district||'—')+')'],[ageOf(p)>=21,'Age 21 or above (you are '+ageOf(p)+')'],rNo(p)],
+'Free House Site Patta (TN)':p=>[[+p.land===0,'Does not own any land'],[['No house','Rented house','Kutcha (hut)'].includes(p.house),'Has no house of own (homeless, rented or hut)'],rIn(p,300000)],
+'TN Cooperative Housing & Repair Loan':p=>[[+p.land>=1||['Kutcha (hut)','Semi-pucca','Pucca'].includes(p.house),'Owns land (1 cent or more) or a house to build or repair'],[ageOf(p)>=21&&ageOf(p)<=60,'Age between 21 and 60 (you are '+ageOf(p)+')'],[!['Unemployed','Student','Homemaker'].includes(p.emp),'Has a regular income source for repayment']],
+'Rural Home Renovation Scheme':p=>[rArea(p,'Rural'),[['Kutcha (hut)','Semi-pucca'].includes(p.house),'Owns a hut or semi-pucca house that needs repair'],rIn(p,300000)],
+'Adi Dravidar & Tribal Housing Support':p=>[[['SC','SCA','ST'].includes(p.community),'Belongs to SC / SCA / ST community'],rNo(p),rIn(p,300000)],
+'EWS Housing':p=>[rNo(p),rIn(p,300000)],'LIG Housing':p=>[rNo(p),[+p.income>300000&&+p.income<=600000,'Income between ₹3,00,001 and ₹6,00,000']],'MIG Housing':p=>[rNo(p),[+p.income>600000&&+p.income<=900000,'Income between ₹6,00,001 and ₹9,00,000']]};
+const cibN=p=>({'750 and above':775,'700 – 749':725,'650 – 699':675,'Below 650':600})[p.cib]||0,isSal=p=>['Government employee','Private employee'].includes(p.emp);
+Object.keys(PP).forEach(n=>{const q=PP[n];RULES[n]=p=>{const mx=isSal(p)?q.am[0]:q.am[1],a=ageOf(p),mon=(+p.income||0)/12,foir=mon?Math.round((+p.emi||0)/mon*100):100;
+ const r=[[['Government employee','Private employee','Self-employed'].includes(p.emp),'Salaried or self-employed with regular income'],[a>=23&&a<=mx-5,'Age 23 to '+(mx-5)+' so the loan can end by '+mx+' (you are '+a+')'],[+p.income>=q.inc,'Annual income at least '+fin(q.inc)+' (yours '+fin(+p.income||0)+')'],[cibN(p)>=q.cib,'CIBIL score '+q.cib+' or above (declared: '+(p.cib||'not given')+')'],[foir<=50,'Existing EMIs are '+foir+'% of income (limit 50%)']];
+ if(q.need==='land')r.push(rLand(p,1));if(q.need==='house')r.push([['Semi-pucca','Pucca'].includes(p.house),'Owns a house to renovate or extend']);return r}});
+const rVeh=p=>[!['Four-wheeler (car)','Both'].includes(p.veh),'Family does not own a four-wheeler (car)'];
+['PMAY – Gramin','Kalaignar Kanavu Illam','Chief Minister Green House Scheme','Rural Home Renovation Scheme','Tamil Nadu Housing Scheme','EWS Housing','LIG Housing','Slum Rehabilitation Scheme','TNUHDB Tenement Allotment','Affordable Rental Housing'].forEach(n=>{const f=RULES[n];RULES[n]=p=>[...f(p),rVeh(p)]});
+const elig=(p,n)=>{const r=(RULES[n]||(()=>[]))(p);return{ok:r.every(x=>x[0]),r}};
+const priOf=(n,p)=>sd(n)[1]==='Tamil Nadu'&&((p.spec&&p.spec!=='None')||['SC','SCA','ST'].includes(p.community))?'<div class="sub" style="margin:4px 0;font-size:.82rem">★ Priority category</div>':'';
+function ensure(a){if(a.scheme==='Credit Linked Subsidy (Home Loan)')a.scheme='Interest Subsidy Scheme (ISS) – Home Loan';if(a.stages)return;const st=a.status;a.stages=[0,1,2].map(i=>({st:st==='Approved'||(st==='Under Review'&&i===0)?'Approved':(st==='Rejected'&&i===0?'Rejected':'Pending'),by:'',remark:'',at:null}));a.cur=st==='Approved'?2:st==='Under Review'?1:0}
+function setStatus(a){const S=a.stages;a.status=S.some(x=>x.st==='Rejected')?'Rejected':S[2].st==='Approved'?'Approved':S[0].st==='Pending'?'Pending':'Under Review'}
+const isPvt=a=>!!PP[a.scheme]||catOf(a)===PCAT,sttOf=a=>isPvt(a)?PSTT:STT;
+const isFinal=a=>a.status==='Approved'||a.status==='Rejected',myLvl=()=>(me()&&me().lvl)||0;
+const canAct=a=>isO()&&!isFinal(a)&&(myLvl()===0||myLvl()===a.cur+1);
+const stgOff=(i,a)=>isPvt(a)?['Loan Executive','Credit Manager','Sanction Manager'][i]:i===0?'Verification Officer':i===1?offName(catOf(a)):'District Collector';
+function stageWith(a){if(a.status==='Approved')return'Completed – all levels approved';if(a.status==='Rejected'){const k=a.stages.findIndex(x=>x.st==='Rejected');return'Rejected at Level '+(k+1)+' ('+stgOff(k,a)+')'}return'Level '+(a.cur+1)+' – '+stgOff(a.cur,a)}
+function nextStep(a){if(a.status==='Approved')return['ok',isPvt(a)?'🎉 Your loan is sanctioned. Next: accept the sanction letter, the lender completes the property legal and technical check, you sign the loan agreement, and the amount is disbursed.':'🎉 Your application is fully approved. Visit your local housing office with the original documents to collect the sanction order.'];
+ if(a.status==='Rejected'){const k=a.stages.findIndex(x=>x.st==='Rejected'),g=a.stages[k];return['bad','❌ Rejected at Level '+(k+1)+' by '+esc(g.by)+'. Reason: '+esc(g.remark||'not given')+'. Correct the issue in your profile or documents and submit a new application.']}
+ return['','⏳ Your application is now with <b>'+stgOff(a.cur,a)+'</b> (Level '+(a.cur+1)+': '+sttOf(a)[a.cur]+').'+(a.cur<2?' After approval it moves to <b>'+stgOff(a.cur+1,a)+'</b>.':' This is the final level.')]}
+const pipeText=c=>c===PCAT?'Level 1 Loan Executive → Level 2 Credit Manager → Level 3 Sanction Manager':c?'Level 1 Verification Officer → Level 2 '+c+' Schemes Officer → Level 3 District Collector':'Level 1 Verification Officer → Level 2 Scheme Officer → Level 3 District Collector';
+let hk='gov',etab='gov',pend={},dfl='',ctab='apps',qv={area:'Rural',income:'',house:'Kutcha (hut)',land:'',veh:'None'},qres='';
+const qProf=q=>({area:q.area,income:q.income||0,house:q.house,land:q.land||0,veh:q.veh,dob:'1990-01-01',emp:'Private employee',spec:'None',community:'OC'});
+function emiCalc(P,r,y){const m=r/1200,n=y*12,e=m?P*m*Math.pow(1+m,n)/(Math.pow(1+m,n)-1):P/n;return{emi:e,total:e*n,int:e*n-P}}
+function emiHtml(a,r,y){const c=emiCalc(a*100000,r,y);return'<div class="emi"><div><span>Monthly EMI</span><b>'+fin(Math.round(c.emi))+'</b></div><div><span>Total interest</span><b>'+fin(Math.round(c.int))+'</b></div><div><span>Total payable</span><b>'+fin(Math.round(c.total))+'</b></div></div>'}
+function updEmi(){const g=id=>+document.getElementById(id).value;document.getElementById('emiAv').textContent=g('emiA')+' lakh';document.getElementById('emiRv').textContent=g('emiR')+'%';document.getElementById('emiTv').textContent=g('emiT')+' yrs';document.getElementById('emiOut').innerHTML=emiHtml(g('emiA'),g('emiR'),g('emiT'))}
+const selH=(id,o,v,ph)=>`<select id="${id}"><option value="">${ph||'Select'}</option>${o.map(x=>`<option ${x===v?'selected':''}>${x}</option>`).join('')}</select>`,inpH=(id,t,v,ph,ex)=>`<input id="${id}" type="${t}" value="${esc(v||'')}" placeholder="${ph||''}" ${ex||''}>`;
+const ltvMax=pv=>pv<=3000000?90:pv<=7500000?80:75;
+function loanCalc(p,amt,yrs,pv){const mon=(+p.income||0)/12,allow=Math.max(0,mon*.5-(+p.emi||0)),r=RATE/1200,n=yrs*12,maxInc=allow>0?allow*(Math.pow(1+r,n)-1)/(r*Math.pow(1+r,n)):0,maxL=Math.round(pv*ltvMax(pv)/100),emi=emiCalc(amt,RATE,yrs).emi;return{maxInc,maxL,emi,ok:amt>0&&amt<=pv&&amt<=maxInc&&amt<=maxL}}
+const maxByIncome=(p,yrs)=>loanCalc(p,1,yrs,1e12).maxInc;
+function bleHtml(i,e,t){const r=RATE/1200,n=t*12,al=Math.max(0,i*.5-e),P=al>0?al*(Math.pow(1+r,n)-1)/(r*Math.pow(1+r,n)):0;return 'Estimated loan you may get: <b>'+fin(Math.round(P))+'</b><br><span class="sub" style="font-size:.8rem">Monthly EMI room: '+fin(Math.round(al))+' (EMIs up to 50% of income) · rate '+RATE+'% · '+t+' years</span>'}
+function updBle(){const g=id=>+document.getElementById(id).value||0;document.getElementById('bleOut').innerHTML=bleHtml(g('bleI'),g('bleE'),g('bleT')||20)}
+function pexHtml(sc){if(!sc||!PP[sc])return'';return `<div class="card" style="margin:14px 0;background:var(--head)"><h3 style="font-size:1.05rem;margin-bottom:6px">Loan details – ${esc(sc)}</h3><div class="two"><div><label>Property value (₹)</label><input id="lpv" type="number" min="0" placeholder="e.g. 4500000"></div><div><label>Loan amount needed (₹)</label><input id="lamt" type="number" min="0" placeholder="e.g. 3000000"></div></div><div class="two"><div><label>Loan tenure (years)</label><input id="lyr" type="number" min="5" max="30" placeholder="5 to 30"></div><div><label>Property location (city / area)</label><input id="lloc" placeholder="e.g. Erode"></div></div><div id="lsum" class="sub" style="margin:10px 0 0">Enter property value, loan amount and tenure to see your loan check.</div></div>`}
+function updLoan(){const el=document.getElementById('lsum'),u=me(),sc=val('s');if(!el||!u||!u.p||!PP[sc])return;const pv=+val('lpv'),amt=+val('lamt'),yrs=+val('lyr');if(!pv||!amt||!yrs){el.textContent='Enter property value, loan amount and tenure to see your loan check.';return}
+ const c=loanCalc(u.p,amt,yrs,pv),f=v=>fin(Math.round(v));el.innerHTML='Estimated EMI at '+RATE+'%: <b>'+f(c.emi)+'</b><br>Max loan by income and existing EMIs: <b>'+f(c.maxInc)+'</b><br>Max loan by property value ('+ltvMax(pv)+'% LTV): <b>'+f(c.maxL)+'</b><br>'+(c.ok?'✅ Your request looks within limits.':'❌ Your request is above one of these limits.')}
+function loanErr(p,sc){const pv=+val('lpv'),amt=+val('lamt'),yrs=+val('lyr'),loc=val('lloc').trim();if(!pv||!amt||!yrs||!loc)return'Enter property value, loan amount, tenure and property location.';if(yrs<5||yrs>30)return'Tenure must be between 5 and 30 years.';const mx=isSal(p)?PP[sc].am[0]:PP[sc].am[1];if(ageOf(p)+yrs>mx)return'The loan must end by age '+mx+'. Choose a tenure of '+Math.max(0,mx-ageOf(p))+' years or less.';if(amt>pv)return'Loan amount cannot exceed the property value.';const c=loanCalc(p,amt,yrs,pv);if(amt>c.maxL)return'Maximum loan on this property value is '+fin(c.maxL)+' ('+ltvMax(pv)+'% LTV).';if(amt>c.maxInc)return'Based on your income and existing EMIs you can borrow about '+fin(Math.round(c.maxInc))+' for '+yrs+' years.';return''}
+function loanTools(){return `<h2 class="sec">Check eligibility &amp; plan your loan</h2><div class="two" style="gap:18px;align-items:start"><div class="card"><h3>Quick eligibility check</h3><p class="sub" style="margin:0 0 6px">Answer 4 questions. No login needed.</p>
+<div class="two"><div><label>Area</label>${selH('qa',['Urban','Rural'],qv.area)}</div><div><label>Annual income (₹)</label>${inpH('qi','number',qv.income,'e.g. 150000','min="0"')}</div></div>
+<div class="two"><div><label>Current housing</label>${selH('qh',HOUSE,qv.house)}</div><div><label>Own land (cents)</label>${inpH('ql','number',qv.land,'0 if none','min="0" step="0.1"')}</div></div>
+<div class="two"><div><label>Vehicles owned</label>${selH('qvh',VEH,qv.veh)}</div><div></div></div><button class="b-pri full" data-a="qcheck" style="margin-top:14px">Check eligibility</button>${qres}</div>
+<div class="card"><h3>Home loan EMI calculator</h3><label>Loan amount <b id="emiAv">20 lakh</b></label><input type="range" id="emiA" min="1" max="100" step="1" value="20"><label>Interest rate <b id="emiRv">8.5%</b></label><input type="range" id="emiR" min="5" max="15" step="0.1" value="8.5"><label>Tenure <b id="emiTv">20 yrs</b></label><input type="range" id="emiT" min="1" max="30" step="1" value="20"><div id="emiOut">${emiHtml(20,8.5,20)}</div><p class="sub" style="font-size:.8rem;margin:10px 0 0">Useful for the Interest Subsidy Scheme and private home loans. Rates are indicative.</p></div>
+<div class="card" style="grid-column:1/-1"><h3>How much home loan can I get?</h3><div class="two"><div><label>Monthly take-home income (₹)</label><input id="bleI" type="number" min="0" value="60000"></div><div><label>Existing monthly EMIs (₹)</label><input id="bleE" type="number" min="0" value="0"></div></div><label>Tenure (years)</label><input id="bleT" type="number" min="5" max="30" value="20"><div id="bleOut" style="margin-top:12px">${bleHtml(60000,0,20)}</div></div></div>`}
+
+const catOf=a=>a.cat||(SCHD.find(x=>x[0]===a.scheme)||[])[1],offName=c=>c?c+' Schemes Officer':'concerned officer';
+const myCats=()=>{const u=me();return(u&&u.cats)||CATS},scope=()=>{const pv=me()&&me().kind==='Pvt';return D.apps.filter(a=>pv?isPvt(a):(!isPvt(a)&&myCats().includes(catOf(a))))};
+const IC={doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 2h8l5 5v15H6z"/><path d="M9 13h7M9 17h7M9 9h3"/></svg>',
+ hg:'<svg viewBox="0 0 24 24" fill="none" stroke="#ffc107" stroke-width="2" stroke-linecap="round"><path d="M6 2h12M6 22h12M7 2c0 6 5 6 5 10s-5 4-5 10M17 2c0 6-5 6-5 10s5 4 5 10"/></svg>',
+ ck:'<svg viewBox="0 0 24 24" fill="none" stroke="#198754" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M7 12.5l3.5 3.5L17 9"/></svg>',
+ x:'<svg viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg>',
+ lock:'<svg viewBox="0 0 24 24" fill="none" stroke="#e08a00" stroke-width="2" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>',
+ bar:'<svg viewBox="0 0 24 24" fill="none" stroke="#6f42c1" stroke-width="2" stroke-linecap="round"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>',
+ usr:'<svg viewBox="0 0 24 24" fill="none" stroke="#0dcaf0" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>'};
+let showDoc=0,scat='All',sq='',keep=false,tid='',tres='',fk='app',pre='',D={users:[],apps:[],n:0},sess=null,view='home',sel=null,flt='All',q='',err='',newId=null;
+try{const s=localStorage.getItem('dhp2');if(s)D=JSON.parse(s)}catch(e){}
+D.apps.forEach(a=>ensure(a));
+try{sess=sessionStorage.getItem('dhp2u')}catch(e){}
+const save=()=>{try{localStorage.setItem('dhp2',JSON.stringify(D));return true}catch(e){return false}};
+const setS=v=>{sess=v;try{v?sessionStorage.setItem('dhp2u',v):sessionStorage.removeItem('dhp2u')}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function H(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+const me=()=>D.users.find(u=>u.email===sess),isO=()=>me()&&me().role==='Officer';
+const inr=n=>'₹'+Number(n).toLocaleString('en-IN'),dt=t=>new Date(t).toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+const cls=s=>s==='Under Review'?'Under':s,badge=s=>`<span class="badge ${cls(s)}">${s}</span>`;
+const val=id=>(document.getElementById(id)||{}).value||'';
+
+function navbar(){const u=me(),dl=dlAPI?'<button class="ghost sm" data-a="dl" title="Save this portal as an HTML file">⬇ Download</button>':'';document.getElementById('nav').innerHTML=dl+(u?`<button class="ghost sm" data-a="dash">Dashboard</button><span>Welcome, ${esc(u.name.split(' ')[0])}</span><button class="b-w sm" data-a="out">Logout</button>`:`<button class="ghost sm" data-a="home">Home</button><button class="b-w" data-a="login">Login</button><button class="b-warn" data-a="register">Register</button>`)}
+function stat(l,n,i){return `<div class="card stat"><div><span>${l}</span><b>${n}</b></div>${IC[i]}</div>`}
+
+function govBlock(vis){return `<div class="sfil"><input id="sq" placeholder="Search schemes…" value="${esc(sq)}" aria-label="Search schemes">${['All',...CATS].map(c=>`<button class="${c===scat?'b-pri':''} sm" data-a="cat" data-v="${c}">${c}</button>`).join('')}</div><p class="sub" style="text-align:center">Showing ${vis.length} of ${SCHD.filter(x=>x[1]!==PCAT).length} government schemes</p><div class="sg">${vis.map(x=>`<div class="card sch"><span class="pill">${x[1]}</span><h4 style="margin:0">${x[0]}</h4><p>${x[2]}</p><button class="b-pri sm" data-a="pick" data-s="${x[0]}">Apply for this scheme</button></div>`).join('')||'<p class="sub" style="text-align:center;grid-column:1/-1">No scheme matches your search.</p>'}</div><p class="sub" style="text-align:center;font-size:.85rem;margin-top:14px">Descriptions are short summaries. Final eligibility is verified by the officers.</p>`}
+function pvtBlock(){const L=SCHD.filter(x=>x[1]===PCAT);return `<p class="sub" style="text-align:center">Home loans from private banks and housing finance companies. Criteria are indicative – confirm with the lender.</p><div class="sg">${L.map(x=>{const q=PP[x[0]];return `<div class="card sch pv"><span class="pill">Private lender</span><h4 style="margin:0">${x[0]}</h4><p>${x[2]}</p><div class="chips2"><span>CIBIL ${q.cib}+</span><span>Income ${fin(q.inc)}+/yr</span><span>Age ≤ ${q.am[0]} / ${q.am[1]}</span></div><button class="b-pri sm" data-a="pick" data-s="${x[0]}">Check eligibility &amp; apply</button></div>`}).join('')}</div>
+<h3 style="margin:28px 0 10px;text-align:center">Compare lenders</h3><div class="card tw"><table><tr><th>Loan product</th><th>Min income / year</th><th>Min CIBIL</th><th>Max age at loan end (salaried / self-employed)</th><th>Max tenure</th></tr>${L.map(x=>{const q=PP[x[0]];return `<tr><td><b>${x[0]}</b></td><td>${fin(q.inc)}</td><td>${q.cib}</td><td>${q.am[0]} / ${q.am[1]}</td><td>30 years</td></tr>`}).join('')}</table></div>
+<p class="sub" style="text-align:center;font-size:.85rem;margin-top:10px">Loan amount is also limited by your income (EMIs within 50%) and the property value (LTV: 90% up to ₹30 lakh, 80% up to ₹75 lakh, 75% above).</p>
+<h3 style="margin:28px 0 10px;text-align:center">How a home loan works</h3><div class="stp" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">${[['Apply online','Fill your profile and loan details.'],['KYC &amp; documents','Identity, income and property papers are verified.'],['Credit assessment','CIBIL score and EMI burden (FOIR) are checked.'],['Sanction letter','Approved amount, rate and tenure are offered.'],['Legal check &amp; disbursal','Property is verified, agreement signed, loan released.']].map((x,i)=>`<div><b>${i+1}</b><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div>`}
+function home(){const vis=SCHD.filter(x=>x[1]!==PCAT&&(scat==='All'||x[1]===scat)&&(!sq||(x[0]+x[2]).toLowerCase().includes(sq.toLowerCase())));
+return `<div class="hero"><div><h1>Digital Housing Scheme Portal</h1><p>Apply for government housing schemes online, upload your documents and track every step of your application. No queues, no paperwork.</p><div class="cta"><button class="b-pri lg" data-a="register">Apply Now</button><button class="lg" data-a="login">Login</button></div></div>
+<div class="card trk"><h3>Track your application</h3><p>Enter your Application ID to see its current status.</p><div style="display:flex;gap:8px"><input id="tid" inputmode="numeric" placeholder="Application ID, e.g. 1" value="${esc(tid)}"><button class="b-pri" data-a="lookup">Track</button></div><div id="tres">${tres}</div></div></div>
+<div class="strip"><div><b>${SCH.length}</b><span>Schemes &amp; loans</span></div><div><b>Paperless</b><span>Upload documents online</span></div><div><b>Real-time</b><span>Status tracking</span></div><div><b>Secure</b><span>Encrypted passwords</span></div></div>
+${loanTools()}<h2 class="sec" id="schemes">Browse housing schemes &amp; loans</h2><div class="kind"><button class="kcard ${hk==='gov'?'on':''}" data-a="hk" data-v="gov"><b>🏛️ Government Schemes</b><span>${SCHD.filter(x=>x[1]!==PCAT).length} schemes · subsidies, free houses, allotments</span></button><button class="kcard ${hk==='pvt'?'on':''}" data-a="hk" data-v="pvt"><b>🏦 Private Home Loans</b><span>${SCHD.filter(x=>x[1]===PCAT).length} loan products from banks and housing finance companies</span></button></div>${hk==='gov'?govBlock(vis):pvtBlock()}
+<h2 class="sec">Portal Features</h2><div class="grid g3">${Object.keys(FE).map(k=>`<div class="card feat" tabindex="0" role="button" data-a="feat" data-k="${k}">${IC[FE[k][0]]}<h4>${FE[k][1]}</h4><p>${FE[k][2]}</p><span class="more">Learn more →</span></div>`).join('')}</div>
+<h2 class="sec">How it works</h2><div class="stp">${[['Register','Create your citizen account with email and phone.'],['Apply','Choose a scheme, fill the form and upload your proof.'],['Review','A housing officer verifies your documents.'],['Decision','Approval or rejection with remarks appears on your dashboard.']].map((x,i)=>`<div><b>${i+1}</b><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div>
+<h2 class="sec">Frequently asked questions</h2><div class="faq">${[['How many schemes can I apply for?','You can browse all schemes and submit a separate application for each scheme you are eligible for.'],['Do I need to visit any office?','No. You apply, upload your document and track the decision online.'],['Which document should I upload?','Aadhaar, income certificate, address proof, passport photo, bank passbook and a scheme-specific proof such as a land document. The form shows the exact list when you choose a scheme.'],['How will I know my application status?','Your dashboard shows Pending, Under Review, Approved or Rejected, along with the officer remarks. You can also track by Application ID above.'],['Is my data secure?','Passwords are stored as hashes and every dashboard needs login. Citizens see only their own applications.']].map(f=>`<details><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join('')}</div>
+<div class="ctab"><h2>Ready to apply for your home?</h2><p>Create an account and submit your application in a few minutes.</p><button class="b-pri lg" data-a="register" style="background:#f59e0b;border-color:#f59e0b;color:#1a1200;font-weight:700">Create free account</button></div>`}
+const FE={app:['doc','Online Application','Apply for housing schemes without visiting government offices.','Submit your complete application from home, in minutes.',['Choose from 14 housing schemes','Enter income, family size and address','Upload every required document for your scheme','Receive an Application ID instantly']],
+trk:['bar','Track Application','Track your application status anytime.','Know exactly where your application stands, without calling or visiting.',['Status: Pending, Under Review, Approved or Rejected','Step-by-step progress bar for every application','Officer remarks shown in your status history','Dashboard counts for pending and approved applications']],
+sec:['lock','Secure System','Secure authentication using JWT and encrypted passwords.','Your personal details and documents are protected.',['Passwords are stored only as hashes','Login required for every dashboard and form','Citizens see only their own applications','Role-based access for citizens and officers']],
+off:['usr','Officer Verification','Officers review documents and approve or reject with remarks.','A simple review desk for housing officers.',['Each officer sees only applications of their assigned schemes','Filter by status and open full details','Verify each document, check eligibility, then approve or reject','Add remarks that the citizen can read']],
+ben:['ck','Beneficiary Records','Approved applicants are kept in a centralized record.','No more scattered registers and files.',['Every decision is stored with date and remarks','Overview chart of pending, approved and rejected','Easy search by name, scheme, ID or address','Records stay in one place for audits']],
+bot:['hg','Chat Assistant','Ask the chatbot about schemes, documents and your status.','Instant answers, any time of the day.',['Click the 💬 button at the bottom right','Ask how to apply or which documents are needed','Type “check my status” after login','Quick-reply buttons for common questions']]};
+function featPage(){const f=FE[fk];return `<button class="back" data-a="home">← Back to home</button><div class="card" style="max-width:760px;margin:0 auto;padding:30px"><div class="feat" style="cursor:default;box-shadow:none"><div style="width:64px;margin:0 auto">${IC[f[0]]}</div></div><h2 style="text-align:center">${f[1]}</h2><p class="sub" style="text-align:center">${f[3]}</p>${f[4].map(x=>`<div class="chk"><i>✓</i><span>${x}</span></div>`).join('')}<div class="cta" style="margin-top:22px;justify-content:center"><button class="b-pri lg" data-a="register">Get started</button><button class="lg" data-a="home">View all features</button></div></div>`}
+function auth(reg){return `<div style="max-width:900px;margin:0 auto"><button class="back" data-a="home" aria-label="Back to home">← Back to home</button></div>
+<div class="authbox"><div class="aside"><div style="font-size:2.2rem">🏠</div><h2>${reg?'Create your citizen account':'Welcome back'}</h2><p>${reg?'Join the portal and apply for housing schemes from home.':'Login to apply for a scheme and track your applications.'}</p><ul><li>Apply online with documents</li><li>Track status in real time</li><li>Chat assistant for quick help</li></ul></div>
+<div class="fm"><h2>${reg?'Citizen Registration':'Login'}</h2><p class="sub">${reg?'Fill in your details to get started.':'Enter your email and password.'}</p>
+${reg?'<label>Full Name</label><input id="n" autocomplete="name" placeholder="Your full name"><label>Email</label><input id="e" type="email" placeholder="you@example.com"><label>Phone</label><input id="p" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number">':'<label>Email</label><input id="e" type="email" placeholder="you@example.com">'}
+<label>Password</label><div class="pw"><input id="w" type="password" autocomplete="${reg?'new-password':'current-password'}" placeholder="${reg?'At least 6 characters':'Your password'}"><button type="button" data-a="eye">Show</button></div>
+<div class="err" id="err"></div><button class="b-pri full lg" data-a="${reg?'doreg':'dolog'}">${reg?'Register':'Login'}</button>
+<p style="text-align:center;margin:16px 0 0">${reg?'Already registered? <a class="lk" data-a="login">Login</a>':'New citizen? <a class="lk" data-a="register">Register</a>'}</p>
+${reg?'':'<p class="sub" style="text-align:center;margin:10px 0 0;font-size:.85rem">Officer logins (email / password):<br>Level 1: verify@housing.gov / verify123<br>Level 2: central@housing.gov / central123<br>tn@housing.gov / tn12345 · income@housing.gov / income123<br>Level 3: collector@housing.gov / collector123<br>Private lender: exec@bank.com / exec123 · credit@bank.com / credit123 · sanction@bank.com / sanction123</p>'}<p style="text-align:center;margin:12px 0 0"><a class="lk" data-a="home">Cancel and go home</a></p></div></div>`}
+function pfForm(u,first){const p=u.p||{};
+return `${first?'<div class="banner"><h2>Welcome, '+esc(u.name.split(' ')[0])+' 👋</h2><p>Complete your profile once. We will match you with the housing schemes you are eligible for.</p></div>':'<button class="back" data-a="dash">← Back to dashboard</button>'}
+<div class="card" style="max-width:820px;margin:0 auto;padding:26px"><h3>My Profile</h3>
+<div class="two"><div><label>Full name</label><input value="${esc(u.name)}" disabled></div><div><label>Phone</label><input value="${esc(u.phone)}" disabled></div></div>
+<div class="two"><div><label>Email</label><input value="${esc(u.email)}" disabled></div><div><label>Date of birth</label>${inpH('pdob','date',p.dob)}</div></div>
+<div class="two"><div><label>Gender</label>${selH('pgen',['Female','Male','Other'],p.gender)}</div><div><label>Community</label>${selH('pcom',COMM,p.community)}</div></div>
+<div class="two"><div><label>Marital status</label>${selH('pmar',['Single','Married','Widowed','Divorced / Separated'],p.marital)}</div><div><label>Special category</label>${selH('pspec',SPEC,p.spec)}</div></div>
+<h3 style="margin-top:22px">Employment &amp; income</h3>
+<div class="two"><div><label>Employment sector</label>${selH('pemp',EMP,p.emp)}</div><div><label>Organisation (for Govt / Private)</label>${inpH('porg','text',p.org,'e.g. TNEB, Infosys')}<small class="hint">Where you work – only for Govt / Private employees</small></div></div>
+<div class="two"><div><label>Annual family income (₹)</label>${inpH('pinc','number',p.income,'e.g. 150000','min="0"')}</div><div><label>Family members</label>${inpH('pfam','number',p.fam,'e.g. 4','min="1"')}</div></div>
+<div class="two"><div><label>Existing monthly loan EMIs (₹)</label>${inpH('pemi','number',p.emi,'0 if none','min="0"')}<small class="hint">Total of all running loan EMIs per month</small></div><div><label>CIBIL / credit score</label>${selH('pcib',CIB,p.cib)}<small class="hint">Needed for private home loans. Check free at cibil.com</small></div></div>
+<h3 style="margin-top:22px">Residence &amp; property</h3>
+<div class="two"><div><label>Area type</label>${selH('parea',['Urban','Rural'],p.area)}</div><div><label>District</label>${selH('pdist',DIST,p.district||'Erode')}</div></div>
+<label>Residential address</label><textarea id="pad" rows="2">${esc(p.address||'')}</textarea>
+<div class="two"><div><label>Current housing</label>${selH('phouse',HOUSE,p.house)}<small class="hint">Kutcha = hut / thatched or mud house · Semi-pucca = partly concrete · Pucca = fully concrete house</small></div><div><label>Own land (in cents)</label>${inpH('pland','number',p.land,'0 if none','min="0" step="0.1"')}</div></div>
+<div class="two"><div><label>Vehicles owned</label>${selH('pveh',VEH,p.veh)}</div><div><label>Aadhaar number</label>${inpH('paad','text','',p.aadhaar?'Saved: '+p.aadhaar+' (leave blank to keep)':'12-digit number','inputmode="numeric" maxlength="12"')}</div></div>
+<div class="err" id="err"></div><button class="b-pri full lg" data-a="psave">Save profile &amp; find my schemes</button></div>`}
+function profView(u){const p=u.p,r=[['Name',u.name],['Phone',u.phone],['Email',u.email],['Age / Gender',ageOf(p)+' yrs · '+p.gender],['Community',p.community],['Marital status',p.marital],['Special category',p.spec],['Employment',p.emp+(p.org?' – '+p.org:'')],['Annual family income',fin(p.income)],['Existing EMIs',fin(p.emi||0)+' / month'],['CIBIL score',p.cib||'—'],['Family members',p.fam],['Area / District',p.area+' · '+p.district],['Address',p.address],['Current housing',p.house],['Own land',p.land+' cent'],['Vehicles',p.veh||'—'],['Aadhaar',p.aadhaar]];
+ return `<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h3>My Profile</h3><button class="sm b-pri" data-a="pedit">Edit profile</button></div><dl class="kv">${r.map(x=>`<dt>${x[0]}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl></div>`}
+function eligTab(u){const pv=etab==='pvt',L=SCH.filter(x=>pv?!!PP[x]:!PP[x]).map(x=>[x,elig(u.p,x)]),ok=L.filter(x=>x[1].ok),no=L.filter(x=>!x[1].ok),cnt=k=>SCH.filter(x=>!!PP[x]===k&&elig(u.p,x).ok).length;
+ return `<div class="tabs"><button class="${!pv?'on':''}" data-a="etab" data-v="gov">🏛️ Government (${cnt(false)} eligible)</button><button class="${pv?'on':''}" data-a="etab" data-v="pvt">🏦 Private loans (${cnt(true)} eligible)</button></div>
+<p class="sub">Based on your profile you match <b>${ok.length}</b> of ${L.length} ${pv?'private loan products':'government schemes'}. Rules are indicative; officers confirm the final decision.</p><h3>✅ You are eligible (${ok.length})</h3><div class="sg">${ok.map(x=>`<div class="card sch ${PP[x[0]]?'pv':''}"><span class="pill">${PP[x[0]]?'Private lender':sd(x[0])[1]}</span><h4 style="margin:0">${x[0]}</h4><p>${sd(x[0])[2]}</p>${x[1].r.map(c=>`<div class="sub" style="margin:0;font-size:.82rem">✓ ${c[1]}</div>`).join('')}${PP[x[0]]?`<div class="sub" style="margin:6px 0 0;font-size:.85rem"><b>Indicative max loan (20 yrs @ ${RATE}%): ${fin(Math.round(maxByIncome(u.p,20)))}</b></div>`:priOf(x[0],u.p)}<button class="b-pri sm" data-a="pick" data-s="${x[0]}">${PP[x[0]]?'Apply for this loan':'Apply for this scheme'}</button></div>`).join('')||'<p class="sub">Nothing matches your current profile in this section.</p>'}</div>
+<h3 style="margin-top:28px">❌ Not eligible right now (${no.length})</h3><p class="sub">The reason is shown on each card.</p><div class="sg">${no.map(x=>`<div class="card sch ne"><span class="pill">${PP[x[0]]?'Private lender':sd(x[0])[1]}</span><h4 style="margin:0">${x[0]}</h4>${x[1].r.map(c=>`<div style="margin:2px 0;font-size:.85rem;color:${c[0]?'var(--mute)':'var(--bad)'}">${c[0]?'✓':'✗'} ${c[1]}</div>`).join('')}</div>`).join('')||'<p class="sub">Good news – you match everything here.</p>'}</div>`}
+function citizen(){const u=me();if(!u.p)return pfForm(u,true);const m=D.apps.filter(a=>a.email===u.email),c=x=>m.filter(a=>a.status===x).length,E=SCH.filter(x=>elig(u.p,x).ok);
+ const tb=[['apps','My applications'],['elig','Schemes for you ('+E.length+')'],['prof','My profile']];
+ return `<div class="banner"><h2>Welcome back, ${esc(u.name.split(' ')[0])} 👋</h2><p>Track your applications and find schemes matched to your profile.</p></div>
+<div class="grid g4">${stat('My Applications',m.length,'doc')}${stat('In progress',c('Pending')+c('Under Review'),'hg')}${stat('Approved',c('Approved'),'ck')}${stat('Schemes for you',E.length,'bar')}</div>
+<div class="tabs">${tb.map(x=>`<button class="${ctab===x[0]?'on':''}" data-a="ctab" data-v="${x[0]}">${x[1]}</button>`).join('')}</div>
+${ctab==='elig'?eligTab(u):ctab==='prof'?profView(u):`<div class="top" style="margin-top:0"><h3>My Applications</h3><button class="b-pri" data-a="apply">⊕ Apply for Housing</button></div><div class="card tw">${table(m.slice().reverse())}</div>`}`}
+function table(l,off){return l.length?`<table><tr><th>Application ID</th>${off?'<th>Applicant</th>':''}<th>Scheme</th><th>Income</th><th>Current stage</th><th>Status</th><th></th></tr>${l.map(a=>`<tr><td><b>#${a.id}</b></td>${off?`<td>${esc(a.name)}</td>`:''}<td>${esc(a.scheme)}</td><td>${inr(a.income)}</td><td style="font-size:.88rem">${esc(stageWith(a))}</td><td>${badge(a.status)}</td><td style="white-space:nowrap"><button class="sm ${off&&canAct(a)?'b-pri':''}" data-a="view" data-id="${a.id}">${off&&canAct(a)?'Review':'View'}</button> ${docsOf(a).length?`<button class="sm" data-a="odoc" data-id="${a.id}" data-i="0">📄 Documents (${docsOf(a).length})</button>`:''}</td></tr>`).join('')}</table>`:'<p style="text-align:center;color:var(--mute);padding:26px 0;margin:0">No applications found.</p>'}
+const dkey=t=>{const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')},dlab=k=>new Date(k+'T00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}),dts=t=>new Date(t).toLocaleDateString('en-IN',{day:'numeric',month:'short'}),tsOf=a=>a.at||(a.hist&&a.hist[0]&&a.hist[0].at)||0;
+function officer(){const A=scope(),u=me(),L=myLvl(),aw=A.filter(canAct),c=x=>A.filter(a=>a.status===x).length,G={},today=dkey(Date.now()),sum=r=>({n:r.length,a:r.filter(x=>x.status==='Approved').length,r:r.filter(x=>x.status==='Rejected').length,p:r.filter(x=>x.status==='Pending'||x.status==='Under Review').length});A.forEach(a=>{const k=dkey(tsOf(a));(G[k]=G[k]||[]).push(a)});const keys=Object.keys(G).sort().reverse().slice(0,8),ds=sum(G[dfl]||[]);
+ const l=A.filter(a=>(flt==='All'||(flt==='Awaiting my action'?canAct(a):a.status===flt))&&(!q||(a.name+a.scheme+a.id+(a.addr||'')).toLowerCase().includes(q.toLowerCase()))&&(!dfl||dkey(tsOf(a))===dfl));
+ return `<div class="banner"><h2>${L?'Level '+L+' · '+(u.kind==='Pvt'?PSTT:STT)[L-1]:'Officer Dashboard'}</h2><p>${esc(u.name)} · ${u.kind==='Pvt'?'Private home loans':L===2?'Schemes: '+myCats().join(', '):'All government schemes'}</p></div>
+<div class="grid g4">${stat('Awaiting my action',aw.length,'hg')}${stat('Total in my view',A.length,'doc')}${stat('Approved (final)',c('Approved'),'ck')}${stat('Rejected',c('Rejected'),'x')}</div>
+<div class="card" style="margin-top:18px"><h3>Status overview</h3>${['Pending','Under Review','Approved','Rejected'].map(x=>{const n=c(x),w=A.length?n*100/A.length:0;return `<div style="display:flex;align-items:center;gap:10px;margin:6px 0"><span style="width:110px">${x}</span><div style="flex:1;background:var(--head);border-radius:6px;height:14px"><div class="${cls(x)}" style="width:${w}%;height:14px;border-radius:6px"></div></div><b>${n}</b></div>`}).join('')}</div>
+<div class="card" style="margin-top:18px"><div class="hd2"><h3>Applications by date</h3><div style="display:flex;gap:8px;align-items:center"><label style="margin:0">Pick a date</label><input type="date" id="dpick" value="${dfl}" style="width:auto"></div></div>
+<div class="dgrid">${keys.map(k=>{const m=sum(G[k]);return `<button class="dcard ${dfl===k?'on':''}" data-a="dpk" data-k="${k}"><b>${k===today?'Today':dlab(k)}</b><span class="sub" style="margin:0;font-size:.8rem">${k===today?dlab(k):'&nbsp;'}</span><div class="dn">${m.n}</div><small class="sub">received</small><div class="dmeta"><span class="ok">✓ ${m.a}</span><span class="bd">✗ ${m.r}</span><span class="pd">⏳ ${m.p}</span></div></button>`}).join('')||'<p class="sub">No applications yet.</p>'}</div>
+${dfl?`<div class="alert" style="margin:14px 0 0">Showing applications received on <b>${dlab(dfl)}</b>: received <b>${ds.n}</b> · approved <b>${ds.a}</b> · rejected <b>${ds.r}</b> · in progress <b>${ds.p}</b>. <a class="lk" data-a="dclr">Show all dates</a></div>`:''}</div>
+<div class="top"><h3>Applications</h3></div><div class="tools"><input id="q" placeholder="Search name, scheme, ID" value="${esc(q)}"><select id="f">${['All','Awaiting my action','Pending','Under Review','Approved','Rejected'].map(x=>`<option ${x===flt?'selected':''}>${x}</option>`).join('')}</select></div>
+<div class="card tw">${table(l.slice().reverse(),true)}</div>`}
+function tlHtml(a){const t0=tsOf(a)||Date.now(),done=isFinal(a),S=a.stages,ini=n=>n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+ const nodes=[['Submitted','done',dts(t0)]].concat(sttOf(a).map((t,i)=>{const g=S[i],cur=!done&&a.cur===i;return[(isPvt(a)?['KYC check','Credit check','Sanction']:['Verification','Scheme review','Final sanction'])[i],g.st==='Approved'?'done':g.st==='Rejected'?'bad':cur?'cur':'',g.at?dts(g.at):cur?'In progress':'Waiting']}));
+ const rail='<div class="rail">'+nodes.map((n,i)=>`<div class="rn ${n[1]}"><div class="c">${n[1]==='done'?'✓':n[1]==='bad'?'✕':i}</div><b>${n[0]}</b><small>${n[2]}</small></div>`).join('')+'</div>';
+ const cards=STT.map((t,i)=>{const g=S[i],cur=!done&&a.cur===i,prev=i===0?t0:(S[i-1].at||t0),who=stgOff(i,a);
+  return `<div class="sc ${g.st}${cur?' cur':''}"><div class="av">${ini(g.by||who)}</div><div style="flex:1;min-width:0"><div class="hd2"><b>Level ${i+1} · ${t}</b>${g.st!=='Pending'?badge(g.st):cur?'<span class="badge Under">⏳ Awaiting action</span>':'<span class="badge Pending">Not reached</span>'}</div>
+<div class="sub" style="margin:2px 0">${g.st!=='Pending'?esc(g.by)+' ('+who+')':who}</div>${g.st!=='Pending'?`<div class="sub" style="margin:0">${g.st} on ${dt(g.at)}</div>`:cur?`<div class="sub" style="margin:0">Waiting since ${dt(prev)}</div>`:''}${g.remark?`<div class="rmk">💬 ${esc(g.remark)}</div>`:''}</div></div>`}).join('');
+ const pg=Math.min(100,(1+S.filter(x=>x.st==='Approved').length)*25);return '<div style="display:flex;justify-content:space-between;color:var(--mute);font-size:.85rem"><span>Progress</span><b>'+(a.status==='Rejected'?'Stopped':pg+'%')+'</b></div><div class="pbar"><i style="width:'+(a.status==='Rejected'?Math.max(25,pg):pg)+'%"></i></div>'+rail+cards}
+function detail(){const a=D.apps.find(x=>x.id===sel);if(!a)return'';if(isO()&&!scope().some(x=>x.id===a.id))return'<button class="back" data-a="dash">← Back to dashboard</button><div class="card">This application belongs to another officer\'s schemes.</div>';
+ const p=a.prof||{},ns=nextStep(a);
+ const kv=[['Applicant',esc(a.name)+' · '+esc(a.phone)],['Scheme',esc(a.scheme)],['Approval path',pipeText(catOf(a))],['Age / Gender',(p.dob?ageOf(p)+' yrs':'—')+' · '+esc(p.gender||a.gen||'—')],['Community',esc(p.community||'—')],['Employment',esc(p.emp||a.occ||'—')+(p.org?' – '+esc(p.org):'')],['Annual income',inr(a.income)],['Family members',esc(a.fam)],['Land / Housing',p.house?esc(p.land)+' cent · '+esc(p.house):'—'],['Special category',esc(p.spec||'—')],['Vehicles',esc(p.veh||'—')],['Address',esc(a.addr)],['Aadhaar',esc(a.aad||p.aadhaar||'—')]];
+ if(a.loan)kv.push(['Loan requested',inr(a.loan.amt)+' for '+a.loan.yrs+' years (EMI about '+inr(Math.round(emiCalc(a.loan.amt,a.loan.rate,a.loan.yrs).emi))+')'],['Property',inr(a.loan.pv)+' · '+esc(a.loan.loc)],['CIBIL / existing EMIs',esc(p.cib||'—')+' · '+inr(p.emi||0)+' per month']);
+ return `<button class="back" data-a="dash">← Back to dashboard</button><div class="card"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h3>Application #${a.id}</h3>${badge(a.status)}</div>
+<div class="alert ${ns[0]}" style="margin-top:6px"><b>Next step:</b> ${ns[1]}</div>
+<h3 style="margin-top:18px">Approval tracking</h3>${tlHtml(a)}
+<h3 style="margin-top:22px">Application details</h3><dl class="kv">${kv.map(x=>`<dt>${x[0]}</dt><dd>${x[1]}</dd>`).join('')}</dl><div id="docv"></div>${docSec(a)}${chkSec(a)}
+${canAct(a)?`<h3 style="margin-top:22px">Your action – Level ${a.cur+1}: ${sttOf(a)[a.cur]}</h3>${a.cur===0?'<p class="sub">Verify every document above (✓ Verify) before approving.</p>':''}<label>Remarks (required if rejecting)</label><input id="rm" placeholder="Reason or note for the applicant"><div class="err" id="err"></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"><button class="b-ok" data-a="st" data-v="Approved">${a.cur<2?'Approve &amp; forward':'Final approve'}</button><button class="b-bad" data-a="st" data-v="Rejected">Reject</button></div>`:(isO()&&!isFinal(a)?`<p class="sub" style="margin-top:20px">This application is currently at: ${stageWith(a)}. You can view it but not act on it.</p>`:'')}</div>`}
+function apply(){const u=me(),p=u.p,E=SCH.filter(x=>elig(p,x).ok),app=newId?D.apps.find(x=>x.id===newId):null,nz=pre&&RULES[pre]&&!elig(p,pre).ok?pre:'';if(nz)pre='';
+ const rows=[['Name',u.name],['Age / Gender',ageOf(p)+' yrs · '+p.gender],['Community',p.community],['Employment',p.emp+(p.org?' – '+p.org:'')],['Annual income',fin(p.income)],['Land / Housing',p.land+' cent · '+p.house],['Vehicles',p.veh||'—'],['Address',p.address]];
+ return `<div style="max-width:760px;margin:0 auto"><button class="back" data-a="dash">← Back to dashboard</button><div style="text-align:center"><h2>Housing Scheme Application</h2><p class="sub">You can apply only for schemes you are eligible for.</p></div>
+<div class="stp2">${['Choose scheme','Check details','Upload documents','Submit'].map((t,i)=>`<div class="s2"><b>${i+1}</b><span>${t}</span></div>`).join('')}</div>
+<div class="card" style="padding:26px">${app?`<div class="alert ok"><b>Application Submitted Successfully!</b><hr style="border:0;border-top:1px solid #a3cfbb"><p style="margin:6px 0">Application ID: <b>#${app.id}</b> · Status: ${badge('Pending')}</p><p style="margin:6px 0 12px">Currently with: <b>${stageWith(app)}</b></p><button class="b-ok" data-a="dash">Go to Dashboard</button></div>`:''}
+${nz?`<div class="alert bad"><b>You are not eligible for ${nz}</b><br>${elig(p,nz).r.filter(x=>!x[0]).map(x=>'✗ '+x[1]).join('<br>')}</div>`:''}<h3>1. Choose scheme</h3>${E.length?`<select id="s"><option value="">Select Housing Scheme</option>${[...CATS,PCAT].map(c=>{const o=E.filter(x=>sd(x)[1]===c);return o.length?`<optgroup label="${c}">${o.map(x=>`<option ${x===pre?'selected':''}>${x}</option>`).join('')}</optgroup>`:''}).join('')}</select>`:'<div class="alert bad">Your current profile does not match any scheme. Update your profile if your details changed.</div>'}
+<div id="pex">${pexHtml(pre)}</div><h3 style="margin-top:22px">2. Check your details <a class="lk" data-a="pedit" style="font-size:.9rem;font-weight:400">(edit profile)</a></h3><dl class="kv">${rows.map(x=>`<dt>${x[0]}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl>
+<div id="dl">${docInputs(pre)}</div>
+<h3 style="margin-top:22px">4. Submit</h3><div class="alert">Your application goes through 3 approval levels: <b id="ofc">${pipeText(pre&&sd(pre)?sd(pre)[1]:'')}</b></div>
+<div class="err" id="err"></div><button class="b-pri full lg" data-a="submit">Submit Application</button><button class="full" data-a="dash">Cancel</button></div></div>`}
+
+function render(){navbar();const u=me();if(u&&view==='apply'&&(u.role==='Officer'||!u.p))view='dash';if(!u&&['dash','apply','detail','profile'].includes(view))view='login';
+ document.getElementById('app').innerHTML=view==='feat'?featPage():view==='login'&&!u?auth(false):view==='register'&&!u?auth(true):!u?home():view==='apply'?apply():view==='detail'?detail():view==='profile'?pfForm(u):u.role==='Officer'?officer():citizen();if(keep)keep=false;else window.scrollTo(0,0);if(view==='detail')drawDoc()}
+document.addEventListener('input',e=>{if(e.target.id&&e.target.id.startsWith('emi'))updEmi();if(['lpv','lamt','lyr'].includes(e.target.id))updLoan();if(e.target.id&&e.target.id.startsWith('ble'))updBle();if(e.target.id==='q'){q=e.target.value;const p=e.target.selectionStart;render();const x=document.getElementById('q');x.focus();x.setSelectionRange(p,p)}});
+document.addEventListener('input',e=>{if(e.target.id==='sq'){sq=e.target.value;keep=true;const p=e.target.selectionStart;render();const x=document.getElementById('sq');x.focus();x.setSelectionRange(p,p)}});
+document.addEventListener('change',e=>{if(e.target.id==='s'){const x=SCHD.find(y=>y[0]===e.target.value),o=document.getElementById('ofc');if(o)o.innerHTML=pipeText(x?x[1]:'');pend={};const px=document.getElementById('pex');if(px){px.innerHTML=pexHtml(e.target.value);updLoan()}const dl=document.getElementById('dl');if(dl)dl.innerHTML=docInputs(e.target.value)}if(e.target.id==='f'){flt=e.target.value;render()}if(e.target.id==='dpick'){dfl=e.target.value;keep=true;render()}});
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;let bad='';
+ if(a==='home'){view='home'}else if(a==='login'||a==='register'){view=a;newId=null}else if(a==='out'){setS(null);view='home'}
+ else if(a==='dash'){view='dash';newId=null}else if(a==='apply'){view='apply';newId=null}
+ else if(a==='lookup'){tid=val('tid').trim();const ap=D.apps.find(x=>String(x.id)===tid.replace('#',''));tres=ap?`<div class="alert ok" style="margin:12px 0 0"><b>#${ap.id}</b> · ${esc(ap.scheme)}<br>Status: ${badge(ap.status)}<br>Now: ${esc(stageWith(ap))}</div>`:(tid?'<div class="alert bad" style="margin:12px 0 0">No application found with this ID.</div>':'')}
+ else if(a==='qcheck'){qv={area:val('qa'),income:val('qi'),house:val('qh'),land:val('ql'),veh:val('qvh')};keep=true;if(!qv.income)qres='<div class="alert bad">Enter your annual income.</div>';else{const ok=SCH.filter(x=>!PP[x]&&elig(qProf(qv),x).ok);qres=ok.length?`<div class="alert ok">You may be eligible for <b>${ok.length}</b> scheme(s):</div><div class="chips2">${ok.map(x=>'<span>'+x+'</span>').join('')}</div><button class="b-pri sm" data-a="register">Register to apply</button>`:'<div class="alert bad">No scheme matches these answers. Try changing income or housing details.</div>'}}
+ else if(a==='ctab'){ctab=b.dataset.v}
+ else if(a==='pedit'){view='profile'}
+ else if(a==='psave'){const u=me(),g=id=>val(id).trim(),pp={dob:g('pdob'),gender:g('pgen'),community:g('pcom'),marital:g('pmar'),spec:g('pspec'),emp:g('pemp'),org:g('porg'),income:g('pinc'),fam:g('pfam'),area:g('parea'),district:g('pdist'),address:g('pad'),house:g('phouse'),land:g('pland'),veh:g('pveh'),emi:g('pemi'),cib:g('pcib')},aa=g('paad');
+  if(Object.values(pp).some((v,i)=>v===''&&Object.keys(pp)[i]!=='org'))bad='Please fill every field in your profile.';
+  else if(['Government employee','Private employee'].includes(pp.emp)&&!pp.org)bad='Enter your organisation / employer name.';
+  else if(ageOf(pp)<18)bad='You must be at least 18 years old.';
+  else if(aa===''&&u.p&&u.p.aadhaar)pp.aadhaar=u.p.aadhaar;
+  else if(!/^\d{12}$/.test(aa))bad='Aadhaar number must be exactly 12 digits.';
+  else pp.aadhaar='XXXX XXXX '+aa.slice(-4);
+  if(!bad){u.p=pp;save();ctab='elig';view='dash'}}
+ else if(a==='hk'){hk=b.dataset.v;keep=true}
+ else if(a==='etab'){etab=b.dataset.v}
+ else if(a==='cat'){scat=b.dataset.v;keep=true}
+ else if(a==='feat'){fk=b.dataset.k;view='feat'}else if(a==='pick'){pre=b.dataset.s;view=me()?'apply':'register'}
+ else if(a==='dl'){try{const c=document.documentElement.cloneNode(true);c.querySelectorAll('script').forEach(x=>x.remove());c.querySelectorAll('head style').forEach((x,i)=>{if(i>0)x.remove()});['#app','#bot','#nav'].forEach(q=>{const e=c.querySelector(q);if(e)e.innerHTML=''});const sc=document.createElement('script');sc.textContent=SELF_SCRIPT;c.querySelector('body').appendChild(sc);
+  await dlAPI.save({filename:'Digital_Housing_Portal_2026AC397.html',data:'<!DOCTYPE html>\n'+c.outerHTML})}catch(e){}return}
+ else if(a==='eye'){const i=document.getElementById('w');i.type=i.type==='password'?'text':'password';b.textContent=i.type==='password'?'Show':'Hide';return}
+ else if(a==='pv'){openFile(pend[b.dataset.i]);return}
+ else if(a==='pvx'){const i=b.dataset.i,inp=document.querySelector('.dfile[data-i="'+i+'"]');inp.value='';delete pend[i];inp.nextElementSibling.innerHTML='';return}
+ else if(a==='dpk'){dfl=dfl===b.dataset.k?'':b.dataset.k;keep=true}
+ else if(a==='dclr'){dfl='';keep=true}
+ else if(a==='odoc'){openDoc(+b.dataset.id,+(b.dataset.i||0));return}
+ else if(a==='doc'){showDoc=showDoc===sel?0:sel;keep=true}
+ else if(a==='view'){sel=+b.dataset.id;view='detail';showDoc=sel}
+ else if(a==='doreg'){const n=val('n').trim(),em=val('e').trim().toLowerCase(),p=val('p').trim(),w=val('w');
+  if(!n||!/^\S+@\S+\.\S+$/.test(em))bad='Enter your name and a valid email.';else if(!/^\d{10}$/.test(p))bad='Phone must be 10 digits.';else if(w.length<6)bad='Password must be at least 6 characters.';
+  else if(D.users.some(u=>u.email===em))bad='This email is already registered. Please login.';
+  else{D.users.push({name:n,email:em,phone:p,role:'Citizen',pw:await H(w)});save();setS(em);view='dash'}}
+ else if(a==='dolog'){const em=val('e').trim().toLowerCase();let u=D.users.find(x=>x.email===em);
+  const of=OFF.find(x=>x.email===em);if(!u&&of&&val('w')===of.pw){u={name:of.name,email:em,phone:'',role:'Officer',pw:await H(of.pw)};D.users.push(u)}if(u&&of&&u.role==='Officer'){u.lvl=of.lvl;u.cats=of.cats;u.kind=of.kind;u.name=of.name;save()}
+  if(u&&u.pw===await H(val('w'))){setS(em);view='dash'}else bad='Email or password is incorrect.'}
+ else if(a==='submit'){const u=me(),p=u.p,s=val('s'),fl=[...document.querySelectorAll('.dfile')];
+  if(!s)bad='Select a scheme.';
+  else if(!elig(p,s).ok)bad='You are not eligible for this scheme: '+elig(p,s).r.find(x=>!x[0])[1];
+  else if(PP[s]&&loanErr(p,s))bad=loanErr(p,s);
+  else if(fl.some(x=>!x.files[0]))bad='Attach every required document.';
+  else if(fl.some(x=>x.files[0].size>716800))bad='Each document must be smaller than 700 KB.';
+  else if(fl.some(x=>!/^(application\/pdf|image\/(jpeg|png))$/.test(x.files[0].type)))bad='Documents must be PDF, JPG or PNG.';
+  else if(D.apps.some(x=>x.email===u.email&&x.scheme===s&&x.status!=='Rejected'))bad='You already have an active application for this scheme.';
+  else{const rd=f=>new Promise(r=>{const x=new FileReader();x.onload=()=>r(x.result);x.onerror=()=>r('');x.readAsDataURL(f)}),docs=[];
+   for(const x of fl){const f=x.files[0];docs.push({label:x.dataset.l,name:f.name,size:f.size,type:f.type,data:await rd(f),ok:null})}
+   D.n++;D.apps.push({id:D.n,at:Date.now(),email:u.email,name:u.name,phone:u.phone,scheme:s,cat:sd(s)[1],income:p.income,fam:p.fam,addr:p.address,dob:p.dob,gen:p.gender,aad:p.aadhaar,occ:p.emp,prof:Object.assign({},p),loan:PP[s]?{amt:+val('lamt'),yrs:+val('lyr'),pv:+val('lpv'),loc:val('lloc').trim(),rate:RATE}:undefined,docs,status:'Pending',cur:0,stages:[0,1,2].map(()=>({st:'Pending',by:'',remark:'',at:null})),hist:[]});
+   if(!save()){D.apps.pop();D.n--;bad='Browser storage is full. Clear old test applications and try again.'}else{newId=D.n;pre=''}}}
+ else if(a==='dv'){const ap=D.apps.find(x=>x.id===sel);ap.docs=docsOf(ap);ap.docs[+b.dataset.i].ok=b.dataset.v==='1';save();keep=true}
+ else if(a==='st'){const ap=D.apps.find(x=>x.id===sel),v=b.dataset.v,rm=val('rm').trim(),k=ap.cur;
+  if(!canAct(ap))bad='This application is not at your level.';
+  else if(v==='Rejected'&&rm.length<5)bad='Please enter a remark (at least 5 characters) explaining why you are rejecting.';
+  else if(v==='Approved'&&k===0&&!(docsOf(ap).length&&docsOf(ap).every(d=>d.ok===true)))bad='Verify every document (✓ Verify) before approving.';
+  else{const g=ap.stages[k];g.st=v;g.by=me().name;g.remark=rm;g.at=Date.now();if(v==='Approved'&&k<2)ap.cur=k+1;setStatus(ap);save()}}
+ if(bad){document.getElementById('err').textContent=bad;return}render();sync();if(bopen)bot()});
+function drawDoc(){const a=D.apps.find(x=>x.id===sel),el=document.getElementById('docv');if(!a||!el||showDoc!==a.id||!a.ddata)return;
+ el.innerHTML='<div class="docbox"><b>'+esc(a.doc)+'</b><div id="dpg">Loading preview…</div></div>';const g=document.getElementById('dpg');
+ fillDoc(a,g)}
+function showPdf(du,g){const go=()=>{try{pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const bin=atob(du.split(',')[1]),arr=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);
+ pdfjsLib.getDocument({data:arr}).promise.then(async pdf=>{g.textContent='';for(let n=1;n<=Math.min(pdf.numPages,5);n++){const pg=await pdf.getPage(n),vp=pg.getViewport({scale:1.3}),c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;g.appendChild(c);await pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise}if(pdf.numPages>5){const t=document.createElement('p');t.className='sub';t.textContent='Showing first 5 of '+pdf.numPages+' pages.';g.appendChild(t)}}).catch(()=>pdfFb(g,du))}catch(e){pdfFb(g,du)}};
+ if(window.pdfjsLib)go();else{const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';sc.onload=go;sc.onerror=()=>pdfFb(g,du);document.head.appendChild(sc)}}
+function blobUrl(du){const h=du.split(','),m=(h[0].match(/:(.*?);/)||[,'application/octet-stream'])[1],b=atob(h[1]),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return URL.createObjectURL(new Blob([a],{type:m}))}
+function pdfFb(g,du){let u='';try{u=blobUrl(du)}catch(e){}g.innerHTML='<p class="sub">Showing the PDF in a basic viewer. <a class="lk" href="'+u+'" target="_blank" rel="noopener">Open PDF in a new tab</a></p><iframe title="PDF" src="'+u+'" style="width:100%;height:60vh;border:1px solid var(--line);border-radius:8px"></iframe>'}
+function fillDoc(a,g){if(a.dtype==='application/pdf')showPdf(a.ddata,g);else g.innerHTML='<img alt="Uploaded document" src="'+a.ddata+'">'}
+function openDoc(id,i=0){const a=D.apps.find(x=>x.id===id),L=a?docsOf(a):[];if(!a||!L.length||(isO()&&!scope().some(x=>x.id===a.id)))return;const d=L[i]||L[0];
+ document.getElementById('modal').innerHTML='<div class="ov" data-m="x"><div class="mb" role="dialog" aria-label="Document viewer"><div class="mh"><b>📄 '+esc(a.name)+' · #'+a.id+'</b><span class="sub">'+esc(a.scheme)+'</span><button data-m="close">✕ Close</button></div><div class="tabs2">'+L.map((x,k)=>'<button class="sm '+(x===d?'b-pri':'')+'" data-a="odoc" data-id="'+a.id+'" data-i="'+k+'">'+esc(x.label)+'</button>').join('')+'</div><div class="mc" id="mpg">Loading…</div></div></div>';
+ fillDoc({dtype:d.type,ddata:d.data},document.getElementById('mpg'))}
+function closeDoc(){const m=document.getElementById('modal');if(m)m.innerHTML=''}
+document.addEventListener('click',e=>{const m=e.target.closest('[data-m]');if(m&&(m.dataset.m==='close'||e.target===m))closeDoc()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDoc()});
+function openFile(f){if(!f)return;document.getElementById('modal').innerHTML='<div class="ov" data-m="x"><div class="mb" role="dialog" aria-label="File preview"><div class="mh"><b>👁 '+esc(f.label)+'</b><span class="sub">'+esc(f.name)+'</span><button data-m="close">✕ Close</button></div><div class="mc" id="mpg">Loading…</div></div></div>';fillDoc({dtype:f.type,ddata:f.data},document.getElementById('mpg'))}
+document.addEventListener('change',e=>{const t=e.target;if(!t.classList||!t.classList.contains('dfile'))return;const fp=t.nextElementSibling,i=t.dataset.i,f=t.files[0],bad=m=>{fp.innerHTML='<span style="color:var(--bad)">✗ '+m+'</span>';t.value='';delete pend[i]};if(!f){delete pend[i];fp.innerHTML='';return}
+ if(f.size>716800)return bad('File is larger than 700 KB. Choose a smaller file.');if(!/^(application\/pdf|image\/(jpeg|png))$/.test(f.type))return bad('Only PDF, JPG or PNG files are allowed.');
+ const r=new FileReader();r.onload=()=>{pend[i]={name:f.name,type:f.type,data:r.result,label:t.dataset.l};fp.innerHTML='<div class="fpv">'+(f.type.startsWith('image/')?'<img alt="preview" src="'+r.result+'">':'<span class="pdfic">PDF</span>')+'<div><b>✓ '+esc(f.name)+'</b><div class="sub" style="margin:0">'+Math.round(f.size/1024)+' KB selected</div><div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="sm b-pri" data-a="pv" data-i="'+i+'">👁 Open file</button><button type="button" class="sm" data-a="pvx" data-i="'+i+'">✕ Remove</button></div></div></div>'};r.readAsDataURL(f)});
+let lastK='';
+function sync(){const k=view+'|'+sel+'|'+fk;if(k!==lastK){lastK=k;try{history.pushState({v:view,s:sel,k:fk},'')}catch(e){}}}
+try{history.replaceState({v:view,s:sel,k:fk},'');lastK=view+'|'+sel+'|'+fk}catch(e){}
+window.addEventListener('popstate',e=>{const t=e.state;if(t){view=t.v;sel=t.s;fk=t.k}else view='home';newId=null;lastK=view+'|'+sel+'|'+fk;render()});
+render();
+try{if(window.claude&&claude.use)claude.use('downloads').then(d=>{if(d){dlAPI=d;navbar()}}).catch(()=>{})}catch(e){}
+let chat=[{r:'b',t:'Vanakkam 🙏 I am your Housing Assistant. Ask me about schemes, documents, how to apply, or your application status.'}],bopen=false,typing=false;
+const CH=['How to apply?','Documents required','Check my status','Available schemes'];
+const chips=()=>{const u=me();return u?(u.role==='Officer'?['How does approval work?','Documents required']:['Schemes I am eligible for','Where is my application?','Why was it rejected?','Documents required']):['How to apply?','Available schemes','Private home loans','What is CIBIL?']};
+function bot(){const el=document.getElementById('bot');
+ el.innerHTML=`<button class="fab" data-b="tog" aria-label="${bopen?'Close':'Open'} chat assistant">${bopen?'✕':'💬'}</button>`+(bopen?`<div class="panel" role="dialog" aria-label="Housing Assistant"><div class="ph"><b>🤖 Housing Assistant</b><span>● Online</span></div><div class="msgs" id="msgs">${chat.map(m=>`<div class="m ${m.r}">${m.t}</div>`).join('')}${typing?'<div class="m b dots"><i></i><i></i><i></i></div>':''}</div><div class="chips">${chips().map(c=>`<button data-b="chip" data-t="${c}">${c}</button>`).join('')}</div><div class="pi"><input id="ci" placeholder="Type your question…" autocomplete="off"><button class="b-pri" data-b="send">Send</button></div></div>`:'');
+ const m=document.getElementById('msgs');if(m)m.scrollTop=m.scrollHeight}
+function findScheme(q){const t=q.toLowerCase().replace(/[^a-z0-9 ]/g,' ');let b=null,m=0;for(const n of SCH){const w=n.toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(' ').filter(x=>x.length>2&&!['scheme','housing','the','for','home','loan','private','bank','tamil','nadu'].includes(x)),c=w.filter(x=>t.includes(x)).length;if(c>m){m=c;b=n}}return b}
+function answer(t){const s=t.toLowerCase(),has=(...k)=>k.some(x=>s.includes(x)),u=me(),isC=u&&u.role!=='Officer',mine=isC?D.apps.filter(a=>a.email===u.email):[],sc=findScheme(s);
+ if(has('emi')||(has('loan')&&/\d/.test(s))){const m=[...s.matchAll(/(\d+(?:\.\d+)?)\s*(lakhs?|lacs?|crores?|cr|years?|yrs?|yr|%|percent)?/g)];let P=0,r=0,y=0;for(const x of m){const v=+x[1],un=x[2]||'';if(/^(lakh|lac)/.test(un))P=v*1e5;else if(/^cr/.test(un))P=v*1e7;else if(/^(year|yr)/.test(un))y=v;else if(un==='%'||un==='percent')r=v;else if(!P&&v>=10000)P=v}
+  if(!P)return 'Tell me the amount, for example: <b>EMI for 20 lakh at 8.5% for 20 years</b>. You can also use the EMI calculator on the home page.';r=r||8.5;y=y||20;const c=emiCalc(P,r,y);return 'Loan <b>'+fin(P)+'</b> at <b>'+r+'%</b> for <b>'+y+' years</b>:<br>Monthly EMI: <b>'+fin(Math.round(c.emi))+'</b><br>Total interest: '+fin(Math.round(c.int))+'<br>Total payable: '+fin(Math.round(c.total))}
+ if(has('reject','declin','not approved')){if(!u)return 'Please <b>login</b> so I can check your applications.';const rj=mine.filter(a=>a.status==='Rejected');return rj.length?rj.map(a=>{const k=a.stages.findIndex(x=>x.st==='Rejected'),g=a.stages[k];return '#'+a.id+' · '+esc(a.scheme)+'<br>Rejected at <b>Level '+(k+1)+'</b> by '+esc(g.by)+'.<br><b>Reason:</b> '+esc(g.remark||'not given')}).join('<hr>')+'<br>You can fix the issue and apply again.':'None of your applications is rejected.'}
+ if(has('status','track','where','my application','next step','progress','pending','ennachu','enna aachu')){if(!u)return 'Please <b>login</b> first, then ask again and I will show your application status.';if(!isC){const n=scope().filter(canAct).length;return 'You have <b>'+n+'</b> application(s) waiting for your action.'}
+  const l=mine.slice(-3);return l.length?l.map(a=>'#'+a.id+' · '+esc(a.scheme)+' – <b>'+a.status+'</b><br>'+nextStep(a)[1]).join('<hr>'):'You have no applications yet. Open <b>Schemes for you</b> and apply.'}
+ if(has('cibil','credit score'))return '<b>CIBIL score</b> (300–900) shows your repayment history. Private lenders usually want <b>700–750 or more</b>. Government schemes do not use it. Pay EMIs and card bills on time and keep card usage low to improve it.';
+ if(has('foir','emi burden'))return '<b>FOIR</b> = your monthly EMIs ÷ monthly income. Lenders prefer it below <b>40–50%</b> including the new loan. Example: income ₹60,000 and existing EMIs ₹10,000 leaves about ₹20,000 for a new EMI.';
+ if(has('ltv','down payment','downpayment'))return '<b>LTV</b> is the share of the property value a lender finances. Typical limits: <b>90%</b> up to ₹30 lakh, <b>80%</b> up to ₹75 lakh, <b>75%</b> above. The rest is your down payment.';
+ if(has('private','bank','lender')&&!sc)return 'We list '+SCHD.filter(x=>x[1]===PCAT).length+' private home loan products:<br>'+SCHD.filter(x=>x[1]===PCAT).map(x=>'• '+x[0]).join('<br>')+'<br>Typical criteria: age 23 to retirement, CIBIL 700–750+, EMIs within 50% of income. Open <b>Private Home Loans</b> on the home page to compare.';
+ if(has('difference','govt vs','government vs','compare'))return '<b>Government schemes</b> give subsidies, free houses or allotments based on income, housing status and community. <b>Private loans</b> give you money to buy or build, based on your income, credit score and repayment capacity, and you repay with interest.';
+ if(has('eligible','eligibility','qualify','suitable','which scheme','enaku')){if(!u)return 'Please <b>login</b> and complete your profile. I will then list the schemes and loans you are eligible for. You can also try the Quick eligibility check on the home page.';if(!isC)return 'Eligibility is checked for citizens from their profile. You can see the automatic check inside each application.';if(!u.p)return 'Your profile is incomplete. Open the dashboard and fill <b>My Profile</b> first.';
+  const g=SCH.filter(x=>!PP[x]&&elig(u.p,x).ok),v=SCH.filter(x=>PP[x]&&elig(u.p,x).ok);return 'Based on your profile:<br><b>Government schemes ('+g.length+'):</b><br>'+(g.map(x=>'• '+x).join('<br>')||'none')+'<br><b>Private loans ('+v.length+'):</b><br>'+(v.map(x=>'• '+x).join('<br>')||'none')+'<br>Open the <b>Schemes for you</b> tab to apply.'}
+ if(sc&&!has('how to apply')){const d=sd(sc);let o='<b>'+sc+'</b> ('+d[1]+')<br>'+d[2]+'<br><b>Documents:</b> '+reqDocs(sc).join(', ')+'.';if(PP[sc])o+='<br><b>Typical criteria:</b> CIBIL '+PP[sc].cib+'+, income '+fin(PP[sc].inc)+'+/yr, loan must end by age '+PP[sc].am[0]+' (salaried) / '+PP[sc].am[1]+' (self-employed), EMIs within 50% of income.';if(isC&&u.p){const e=elig(u.p,sc);o+='<br><b>Your eligibility:</b> '+(e.ok?'✅ Eligible':'❌ Not eligible')+'<br>'+e.r.map(c=>(c[0]?'✓ ':'✗ ')+c[1]).join('<br>')}else o+='<br>Login and complete your profile to see whether you are eligible.';return o}
+ if(has('approval','approve','level','stage','process','collector','who approves'))return 'Every application goes through <b>3 levels</b>:<br>1. <b>Verification Officer</b> – checks every document<br>2. <b>Scheme Officer</b> – reviews eligibility for your scheme category<br>3. <b>District Collector</b> – final sanction<br>Each officer can approve or reject. A rejection needs a written remark, which you can see in your tracking page.';
+ if(has('document','proof','certificate','upload','patta','aadhaar'))return 'Common documents: '+DOCB.join(', ')+'.<br>Some schemes need one more proof (for example a land patta for rural construction schemes). Ask me about a scheme by name, such as <b>Kalaignar Kanavu Illam documents</b>.';
+ if(has('profile','community','age','income'))return 'Your profile holds name, phone, email, date of birth, gender, community, employment (Govt / Private / Self-employed…), income, land, housing and address. The portal uses it to find schemes you are eligible for.';
+ if(has('apply','eppadi','how to'))return 'To apply:<br>1. Register and complete <b>My Profile</b><br>2. Open <b>Schemes for you</b> and pick a scheme<br>3. Upload the required documents<br>4. Submit – you get an Application ID and can track every approval level.';
+ if(has('scheme','plan','yojana','available'))return 'We have '+SCH.length+' schemes:<br>'+CATS.map(c=>'<b>'+c+'</b>: '+SCHD.filter(x=>x[1]===c).map(x=>x[0]).join(', ')).join('<br>');
+ if(has('login','register','password','sign'))return 'Use <b>Register</b> with name, email, 10-digit phone and a password of 6+ characters. After login, complete your profile.';
+ if(has('secure','safe','privacy'))return 'Passwords are stored as hashes, only the last 4 Aadhaar digits are kept, and every dashboard needs login.';
+ if(has('thank','nandri'))return 'You are welcome! 😊';
+ if(has('hi','hello','vanakkam','hey'))return 'Vanakkam! Ask me about eligibility, scheme details, documents, approval levels, your status, rejection reasons or loan EMI.';
+ return 'I can help with <b>eligibility</b>, <b>scheme details</b>, <b>documents</b>, <b>approval levels</b>, <b>application status</b>, <b>rejection reasons</b> and <b>loan EMI</b>. Try one of the quick buttons.'}
+function ask(t){t=t.trim();if(!t||typing)return;chat.push({r:'u',t:esc(t)});typing=true;bot();setTimeout(()=>{chat.push({r:'b',t:answer(t)});typing=false;bot();const i=document.getElementById('ci');if(i)i.focus()},700)}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-b]');if(!b)return;const k=b.dataset.b;
+ if(k==='tog'){bopen=!bopen;bot();const i=document.getElementById('ci');if(i)i.focus()}else if(k==='chip')ask(b.dataset.t);else if(k==='send')ask(val('ci'))});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&['n','e','p','w'].includes(e.target.id)){const g=document.querySelector('[data-a=dolog],[data-a=doreg]');if(g)g.click()}else if(e.key==='Enter'&&e.target.id==='ci')ask(e.target.value);else if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('feat'))e.target.click()});
+bot();
+let look={skin:'twilight',shape:'round',font:'modern',mode:'auto'},lopen=false;
+try{const x=JSON.parse(localStorage.getItem('dhp_look3'));if(x)look=Object.assign(look,x)}catch(e){}
+const SKINS=[['twilight','Ombre Twilight: Navy to Rose','#26335c','#7c86b8','#f2b8c6'],['dusk','Ombre Dusk: Plum to Peach','#4a2c55','#9a5f86','#f4b79b'],['sage','Oil Pastel Sage','#33412f','#8fb98a','#f7dc8e'],['teal','Teal & Saffron','#0e1a35','#0e7c7b','#f59e0b'],['blue','Royal Blue','#0b2a6f','#2563eb','#ffb703'],['green','Tricolour Green','#0b3d2e','#15803d','#ff9933'],['violet','Fintech Violet','#1e1b4b','#7c3aed','#22d3ee'],['maroon','Heritage Maroon','#3b0d11','#be123c','#f2b705'],['emerald','Midnight Emerald','#0a0f1f','#047857','#fbbf24']];
+function applyLook(){const r=document.documentElement;r.setAttribute('data-skin',look.skin);r.setAttribute('data-shape',look.shape);r.setAttribute('data-font',look.font);if(['sage','dusk','twilight'].includes(look.skin))r.setAttribute('data-pastel','1');else r.removeAttribute('data-pastel');if(look.mode==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',look.mode);try{localStorage.setItem('dhp_look3',JSON.stringify(look))}catch(e){}}
+const seg=(k,o)=>'<div class="sg2">'+o.map(x=>'<button class="'+(look[k]===x[0]?'on':'')+'" data-l="'+k+'" data-v="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>';
+function lookPanel(){document.getElementById('look').innerHTML='<button class="lkb" data-l="tog" aria-label="Change look">🎨 Change look</button>'+(lopen?'<div class="lkp" role="dialog" aria-label="Change look"><b>Colour theme</b><div class="sw">'+SKINS.map(s=>'<button class="'+(look.skin===s[0]?'on':'')+'" data-l="skin" data-v="'+s[0]+'"><i style="background:linear-gradient(135deg,'+s[2]+' 50%,'+s[3]+' 50%)"><u style="background:'+s[4]+'"></u></i><span>'+s[1]+'</span></button>').join('')+'</div><b>Corners</b>'+seg('shape',[['round','Rounded'],['sharp','Sharp']])+'<b>Font</b>'+seg('font',[['modern','Modern'],['serif','Serif'],['clean','Clean']])+'<b>Mode</b>'+seg('mode',[['auto','Auto'],['light','Light'],['dark','Dark']])+'</div>':'')}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-l]');if(!b)return;const k=b.dataset.l;if(k==='tog')lopen=!lopen;else look[k]=b.dataset.v;applyLook();lookPanel()});
+applyLook();lookPanel();
+</script>
+</body>
+</html>
